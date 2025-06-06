@@ -4,8 +4,11 @@
 enum enum_status{
     START, 
     START_MENU,
-    LOGIN, 
-    SIGN_UP
+    RULE,
+    SIGN_UP,
+    SIGN_IN,
+    MAIN_MENU,
+    QUIT
 };
 
 #endif

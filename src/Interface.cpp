@@ -68,8 +68,9 @@ int start_menu::run_start_menu(){
     set_item();
     run_UI();
     
-    if (final_choice == 1) return LOGIN;
-    else return SIGN_UP;
+    if (final_choice == 0) return RULE;
+    if (final_choice == 1) return SIGN_UP;
+    else return SIGN_IN;
 }
 
 void start_menu::set_item(){
@@ -81,11 +82,11 @@ void start_menu::set_item(){
                 break;
                 
             case 1:
-                temp->set_item_name("LOGIN");
+                temp->set_item_name("SIGN UP");
                 break;
             
             case 2:
-                temp->set_item_name("SIGN UP");
+                temp->set_item_name("LOGIN");
                 break;
                 
             default:
@@ -167,6 +168,195 @@ char start_menu::input_manage(){
 //start menu
 //----------------------------------------------------------
 
+sign_up::sign_up(): Interface(){
+    current_user_account = "";
+    current_user_password = "";
+}
+
+int sign_up::run_sign_up(){
+    run_UI();
+
+    current_user_account = "";
+    current_user_password = "";
+
+    if (final_choice == 1){
+        return MAIN_MENU;
+    } else {
+        return START_MENU;
+    }
+}
+
+bool sign_up::char_is_valid(char input){
+    return (input >= 48 && input <= 57) || (input >= 65 && input <= 90) || (input >= 97 && input <= 122);
+}
+
+void sign_up::run_UI(){
+    char input = 'i';
+    while (true){
+        do {
+            system("clear");
+            show_balatro();
+            block_display("ACCOUNT", current_user_account, true);
+
+            cin >> input;
+            if (input == '-' && current_user_account.length() > 0){
+                current_user_account = current_user_account.substr(0, current_user_account.length() - 1);
+            } else if (input == '-' && current_user_account.length() == 0){
+                final_choice = 0;
+                return;
+            } else if (char_is_valid(input)){
+                current_user_account += input;
+            }
+        } while (input != '=');
+
+        if (my_login_system.have_existed(current_user_account)){
+            cout << "Account has EXISTED.";
+            cin >> input;
+            input = 'i';
+        } else {
+            break;
+        }
+    }
+
+    my_login_system.set_account(current_user_account);
+
+     do {
+        system("clear");
+        show_balatro();
+        block_display("ACCOUNT", current_user_account, false);
+        block_display("PASSWORD", current_user_password, true);
+
+        cin >> input;
+        if (input == '-' && current_user_password.length() > 0){
+            current_user_password = current_user_password.substr(0, current_user_password.length() - 1);
+        }  else if (char_is_valid(input)){
+            current_user_password += input;
+        }
+    } while (input != '=');
+
+    my_login_system.set_password(current_user_password);
+
+    my_login_system.save_user();
+    final_choice = 1;
+}
+
+void sign_up::block_display(string title, string content, bool blod){
+    if (blod){
+        cout << "\n";
+        cout << "                 #================================#\n";
+        cout << setw(15) << right << title << ": ║" << setw(32) << left << content << "║\n";
+        cout << "                 #================================#\n";
+        cout << "\n";
+    } else {
+        cout << "\n";
+        cout << "                 .--------------------------------.\n";
+        cout << setw(15) << right << title << ": ║" << setw(32) << left << content << "║\n";
+        cout << "                 '--------------------------------'\n";
+        cout << "\n";
+    }
+
+}
+
+//sign up
+//----------------------------------------------------------
 
 
+sign_in::sign_in(): Interface(){
+    current_user_account = "";
+    current_user_password = "";
+}
 
+int sign_in::run_sign_in(){
+    run_UI();
+
+    current_user_account = "";
+    current_user_password = "";
+
+    if (final_choice == 1){
+        return MAIN_MENU;
+    } else {
+        return START_MENU;
+    }
+}
+
+bool sign_in::char_is_valid(char input){
+    return (input >= 48 && input <= 57) || (input >= 65 && input <= 90) || (input >= 97 && input <= 122);
+}
+
+void sign_in::run_UI(){
+    char input = 'i';
+    while (true){
+        do {
+            system("clear");
+            show_balatro();
+            block_display("ACCOUNT", current_user_account, true);
+
+            cin >> input;
+            if (input == '-' && current_user_account.length() > 0){
+                current_user_account = current_user_account.substr(0, current_user_account.length() - 1);
+            } else if (input == '-' && current_user_account.length() == 0){
+                final_choice = 0;
+                return;
+            } else if (char_is_valid(input)){
+                current_user_account += input;
+            }
+        } while (input != '=');
+
+        if (!my_login_system.have_existed(current_user_account)){
+            cout << "Account NOT FOUND.";
+            cin >> input;
+            input = 'i';
+        } else {
+            break;
+        }
+    }
+
+    my_login_system.set_account(current_user_account);
+
+    while (true){
+        do {
+            system("clear");
+            show_balatro();
+            block_display("ACCOUNT", current_user_account, false);
+            block_display("PASSWORD", current_user_password, true);
+
+            cin >> input;
+            if (input == '-' && current_user_password.length() > 0){
+                current_user_password = current_user_password.substr(0, current_user_password.length() - 1);
+            }  else if (char_is_valid(input)){
+                current_user_password += input;
+            }
+        } while (input != '=');
+
+        if (my_login_system.password_is_valid(current_user_password)){
+            return;
+        } else {
+            cout << "Password is INCORRECT.";
+            cin >> input;
+            input = 'i';
+        }
+
+    }
+
+    my_login_system.set_password(current_user_password);
+
+    my_login_system.save_user();
+    final_choice = 1;
+}
+
+void sign_in::block_display(string title, string content, bool blod){
+    if (blod){
+        cout << "\n";
+        cout << "                 #================================#\n";
+        cout << setw(15) << right << title << ": ║" << setw(32) << left << content << "║\n";
+        cout << "                 #================================#\n";
+        cout << "\n";
+    } else {
+        cout << "\n";
+        cout << "                 .--------------------------------.\n";
+        cout << setw(15) << right << title << ": ║" << setw(32) << left << content << "║\n";
+        cout << "                 '--------------------------------'\n";
+        cout << "\n";
+    }
+
+}

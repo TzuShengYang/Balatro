@@ -19,6 +19,8 @@ private:
     //UI
     start *start_UI;
     start_menu *start_menu_UI;
+    sign_up *sign_up_UI;
+    sign_in *sign_in_UI;
     
     int status;
     void init();

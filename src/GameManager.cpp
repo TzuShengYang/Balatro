@@ -2,6 +2,7 @@
 #include "../inc/Interface.h"
 #include "../inc/Player.h"
 #include "../inc/InterfaceNo.h"
+#include "../inc/InterfaceNo.h"
 
 using namespace std;
 
@@ -13,6 +14,8 @@ GameManager::GameManager(){
     
     start_UI = new start;
     start_menu_UI = new start_menu;
+    sign_up_UI = new sign_up;
+    sign_in_UI = new sign_in;
 }
 
 void GameManager::init(){
@@ -23,18 +26,24 @@ void GameManager::init(){
 void GameManager::implement_game(){
     init();
 
-    while (status != 10){
+    while (status != QUIT){
         switch (status) {
-            case 0:
+            case START:
                 status = start_UI -> run_start();
                 break;
 
-            case 1:
+            case START_MENU:
                 status = start_menu_UI -> run_start_menu();
                 break;
-            case 2:
-                
+
+            case SIGN_UP:
+                status = sign_up_UI -> run_sign_up();
                 break;
+
+            case SIGN_IN:
+                status = sign_in_UI -> run_sign_in();
+                break;
+
             default:
                 return;
         }

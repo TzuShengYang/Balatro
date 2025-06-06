@@ -27,8 +27,15 @@ json login_system::load_user(){
     return users;
 }
 
+void login_system::add_user(){
+    json_user[account] = {
+        {"password", password},
+        {"currency", 0}
+    };
+}
 
 void login_system::save_user(){
+    add_user();
     ofstream outfile(filename);
     outfile << json_user.dump(4);
     outfile.close();
@@ -39,11 +46,18 @@ bool login_system::have_existed(string _username){
 }
 
 bool login_system::password_is_valid(string _password){
-    if(json_user[account]["password"] == _password){
+    if (json_user[account]["password"] == _password){
         password = _password;
-        save_user();
         return true;
     }
 
     return false;
+}
+
+void login_system::set_account(string _account){
+    account = _account;
+}
+
+void login_system::set_password(string _password){
+    password = _password;
 }

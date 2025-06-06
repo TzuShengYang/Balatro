@@ -2,12 +2,15 @@
 #define _INTERFACE_H_
 
 #include "Item.h"
+#include "json.hpp"
+#include "LoginSystem.h"
 
 #include <vector>
 #include <iostream>
 #include <cstdlib>
 #include <iomanip>
 
+using json = nlohmann::json;
 using namespace std;
 
 void show_balatro();
@@ -50,5 +53,38 @@ public:
 
 //----------------------------------------------
 
+class sign_up: public Interface{
+private:
+    login_system my_login_system;
+
+    string current_user_account;
+    string current_user_password;
+
+    void run_UI();
+    void block_display(string title, string content, bool blod);
+    bool char_is_valid(char input);
+public:
+    sign_up();
+    int run_sign_up();
+};
+
+//----------------------------------------------
+
+class sign_in: public Interface{
+private:
+    login_system my_login_system;
+
+    string current_user_account;
+    string current_user_password;
+
+    void run_UI();
+    void block_display(string title, string content, bool blod);
+    bool char_is_valid(char input);
+public:
+    sign_in();
+    int run_sign_in();
+};
+
+//----------------------------------------------
 
 #endif
