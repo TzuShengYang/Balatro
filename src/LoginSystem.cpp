@@ -32,16 +32,8 @@ void login_system::add_user(){
         {"password", password},
         {"currency", 0},
         {"experience", 0},
+        {"highest", 0},
         {"level", 1}
-    };
-}
-
-void login_system::add_user(unsigned int _currency, unsigned int _experince, unsigned int _level){
-    json_user[account] = {
-        {"password", password},
-        {"currency", _currency},
-        {"experience", _experince},
-        {"level", _level}
     };
 }
 
@@ -78,13 +70,17 @@ string login_system::get_username(){
 }
 
 unsigned int login_system::get_user_level(){
-    return level;
+    return json_user[account]["level"];
 }
 
 unsigned int login_system::get_user_currency(){
-    return currency;
+    return json_user[account]["currency"];
 }
 
 unsigned int login_system::get_user_experience(){
-    return experience;
+    return json_user[account]["experience"];
+}
+
+unsigned int login_system::get_user_highest(){
+    return json_user[account]["highest"];
 }

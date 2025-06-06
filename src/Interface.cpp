@@ -181,7 +181,7 @@ int sign_up::run_sign_up(Player *_current_user){
     _current_user -> set_user_currency(my_login_system.get_user_currency());
     _current_user -> set_user_experience(my_login_system.get_user_experience());
     _current_user -> set_user_level(my_login_system.get_user_level());
-
+    _current_user -> set_user_highest(my_login_system.get_user_highest());
 
     current_user_account = "";
     current_user_password = "";
@@ -374,7 +374,6 @@ void sign_in::run_UI(){
 
     my_login_system.set_password(current_user_password);
 
-    my_login_system.save_user();
     final_choice = 1;
 }
 
@@ -398,8 +397,241 @@ void sign_in::block_display(string title, string content, bool blod){
 //sign up
 //----------------------------------------------------------
 
+main_menu::main_menu(): Interface(4){}
 
+int main_menu::run_main_menu(Player *_current_user){
+    current_user = _current_user;
+    set_item();
+    run_UI();
+    
+    if (final_choice == 0) return PLAY;
+    else if (final_choice == 1) return START_MENU;
+    else if (final_choice == 2) return QUIT;
+    else return LEADINGBOARD;
+}
+
+void main_menu::set_item(){
+    for (int i = 0;i < 4;i++){
+        Item *temp = new Item(i);
+        switch(i){
+            case 0:
+                temp->set_item_name("PLAY");
+                break;
+                
+            case 1:
+                temp->set_item_name("LOG OUT");
+                break;
+            
+            case 2:
+                temp->set_item_name("QUIT");
+                break;
+
+            case 3:
+                temp->set_item_name("LEADING BOARD");
+                break;
+                
+            default:
+                break;
+        }
+        add_item(temp);
+    }
+    item_number = 4;
+}
+
+void main_menu::add_item(Item *obj){
+    buttons.push_back(obj);
+}
+
+void main_menu::run_UI(){
+    char input = 'i';
+    do {
+        system("clear");
+        cout << current_user -> get_username() << "\n";
+        cout << current_user -> get_user_level() << "\n";
+        cout << current_user -> get_user_experience() << "\n";
+        cout << current_user -> get_user_currency() << "\n";
+        cout << current_user -> get_user_highest() << "\n";
+        show_balatro();
+        item_display(15);
+        input = input_manage();
+        
+    } while (input != '=');
+}
+
+Item *main_menu::get_item(int index){
+    return buttons.at(index);
+}
+
+
+void main_menu::item_display(int item_width, int item_height){
+    for (int i = 0;i < item_height;i++){
+        if (i == 0 || i == item_height - 1){
+            for (int j = 0;j < item_number;j++){
+                if (j){
+                    for (int k = 0;k < 7;k++) cout << " ";
+                }
+                if (get_item(j) -> get_item_status()){
+                    for (int k = 0;k < item_width;k++) cout << "=";
+                } else {
+                    for (int k = 0;k < item_width;k++) cout << "-";
+                }
+            }
+        } else {
+            for (int j = 0;j < item_number;j++){
+                if (j){
+                    for (int k = 0;k < 7;k++) cout << " ";
+                }
+                if (get_item(j) -> get_item_status()){
+                    cout << "║" << left << setw(item_width - 2) << get_item(j) -> get_item_name() << "║";
+                } else {
+                    cout << "|" << left << setw(item_width - 2) << get_item(j) -> get_item_name() << "|";
+                }
+            }
+        }
+        cout << "\n";
+    }
+    return;
+}
+
+char main_menu::input_manage(){
+    char input;
+    cin >> input;
+
+    if ((input == 'd' || input == 'D') && final_choice < item_number - 1){
+        final_choice++;
+        get_item(final_choice - 1) -> switch_item_status();
+        get_item(final_choice) -> switch_item_status();
+    } else if ((input == 'a' || input == 'A') && final_choice > 0){
+        final_choice--;
+        get_item(final_choice + 1) -> switch_item_status();
+        get_item(final_choice) -> switch_item_status();
+    }
+
+    return input;
+}
 
 //main menu
 //----------------------------------------------------------
 
+int rule::show_rule(){
+    int page = 0;
+    char choice;
+    while (cin >> choice){
+        if ((choice == 'D' || choice == 'd') && page != 3){
+            page += 1;
+        } else if ((choice == 'A' || choice == 'a') && page != 0) {
+            page -= 1;
+        }
+    }
+
+    switch (page) {
+        case 0:
+            cout << "╔══════════════════════════════════════════════════╗\n";
+            cout << "║                                                  ║\n";
+            cout << "║             Use 'WASD' keys to select            ║\n";
+            cout << "║               Use '=' key to enter               ║\n";
+            cout << "║            Use '-' key to delete input           ║\n";
+            cout << "║                                                  ║\n";
+            cout << "║                                                  ║\n";
+            cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
+            cout << "║           A ┃ < ┃   page 1/4   ┃ > ┃ D           ║\n";
+            cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
+            cout << "║                                                  ║\n";
+            cout << "╚══════════════════════════════════════════════════╝\n";
+            break;
+        case 1:
+            cout << "╔══════════════════════════════════════════════════╗\n";
+            cout << "║                                                  ║\n";
+            cout << "║          There are 4 rounds in one game          ║\n";
+            cout << "║        Each round has 3 times to play card       ║\n";
+            cout << "║  You can discard 1~5 cards 3 times in each round ║\n";
+            cout << "║                                                  ║\n";
+            cout << "║                                                  ║\n";
+            cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
+            cout << "║           A ┃ < ┃   page 2/4   ┃ > ┃ D           ║\n";
+            cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
+            cout << "║                                                  ║\n";
+            cout << "╚══════════════════════════════════════════════════╝\n";
+            break;
+        case 2:
+            cout << "╔══════════════════════════════════════════════════╗\n";
+            cout << "║                                                  ║\n";
+            cout << "║                                                  ║\n";
+            cout << "║    The score you gain will convert to currency   ║\n";
+            cout << "║     You can use currency to buy skill cards      ║\n";
+            cout << "║                                                  ║\n";
+            cout << "║                                                  ║\n";
+            cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
+            cout << "║           A ┃ < ┃   page 3/4   ┃ > ┃ D           ║\n";
+            cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
+            cout << "║                                                  ║\n";
+            cout << "╚══════════════════════════════════════════════════╝\n";
+            break;
+        case 3:
+            cout << "╔══════════════════════════════════════════════════╗\n";
+            cout << "║                                                  ║\n";
+            cout << "║                                                  ║\n";
+            cout << "║            Now try your best to become           ║\n";
+            cout << "║               the top 1 player !!!               ║\n";
+            cout << "║                                                  ║\n";
+            cout << "║                                                  ║\n";
+            cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
+            cout << "║           A ┃ < ┃   page 4/4   ┃ > ┃ D           ║\n";
+            cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
+            cout << "║              Enter '=' to start ...              ║\n";
+            cout << "╚══════════════════════════════════════════════════╝\n";
+            break;
+        default:
+            cout << "╔══════════════════════════════════════════════════╗\n";
+            cout << "║                                                  ║\n";
+            cout << "║             Use 'WASD' keys to select            ║\n";
+            cout << "║               Use '=' key to enter               ║\n";
+            cout << "║            Use '-' key to delete input           ║\n";
+            cout << "║                                                  ║\n";
+            cout << "║                                                  ║\n";
+            cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
+            cout << "║           A ┃ < ┃   page 1/4   ┃ > ┃ D           ║\n";
+            cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
+            cout << "║                                                  ║\n";
+            cout << "╚══════════════════════════════════════════════════╝\n";
+    }
+    
+    return START_MENU;
+} 
+    
+//rule
+//----------------------------------------------------------
+/*
+leading_board::leading_board(): Interface(){
+    page = 0;
+    userdata = load_user();
+}
+
+int leading_board::show_leading_board(){
+    run_UI();
+    return MAIN_MENU;
+}
+
+void leading_board::run_UI(){
+    char input;
+    do {
+        system("clear");
+        bar_display();
+        sort_leading_board();
+        rank_table_display();
+        input_manage();
+
+    } while (input != '=');
+}
+
+json leading_board::load_user(){
+    ifstream infile("users.json");
+    if (!infile.is_open()) return json::object();
+    json users;
+    infile >> users;
+    infile.close();
+    return users;
+}
+*/
+//leading board
+//----------------------------------------------------------

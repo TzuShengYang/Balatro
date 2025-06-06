@@ -20,6 +20,10 @@ void Player::set_user_level(unsigned int _user_level){
     user_level = _user_level;
 }
 
+void Player::set_user_highest(unsigned int _highest){
+    highest = _highest;
+}
+
 string Player::get_username(){
     return username;
 }
@@ -34,6 +38,10 @@ unsigned int Player::get_user_currency(){
 
 unsigned int Player::get_user_experience(){
     return user_experience;
+}
+
+unsigned int Player::get_user_highest(){
+    return highest;
 }
 
 void Player::level_up(){

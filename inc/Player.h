@@ -11,6 +11,7 @@ private:
     unsigned int user_level;
     unsigned int user_experience;
     unsigned int user_currency;
+    unsigned int highest;
     
     bool able_to_buy(int amount);
     void level_up();
@@ -23,11 +24,13 @@ public:
     void set_user_currency(unsigned int _user_currency);
     void set_user_experience(unsigned int _user_experience);
     void set_user_level(unsigned int _user_level);
+    void set_user_highest(unsigned int _highest);
     
     string          get_username();
     unsigned int    get_user_level();
     unsigned int    get_user_experience();
     unsigned int    get_user_currency();
+    unsigned int    get_user_highest();
     
     void gain_exp(int amount);
     void gain_currency(int amount);

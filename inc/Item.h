@@ -32,4 +32,25 @@ class goods: public Item{
     bool is_sold;
 };
 
+class card: public Item{
+private:
+    enum enum_suit{
+        SPADE,
+        HEART,
+        DIAMOND,
+        CLUB
+    };
+    int suit;
+    int number;
+
+public:
+    card();
+
+    void set_card(int _suit, int _number);
+
+    unsigned int get_card_suit();
+    unsigned int get_card_num();
+
+};
+
 #endif

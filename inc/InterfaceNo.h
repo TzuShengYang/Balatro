@@ -7,7 +7,10 @@ enum enum_status{
     RULE,
     SIGN_UP,
     SIGN_IN,
+    PLAY,
     MAIN_MENU,
+    LOGOUT,
+    LEADINGBOARD,
     QUIT
 };
 

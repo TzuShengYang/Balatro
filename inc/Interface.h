@@ -90,6 +90,7 @@ public:
 
 class main_menu: public Interface{
 private:
+    Player *current_user;
     vector<Item*> buttons;
     void set_item();
     void run_UI();
@@ -99,7 +100,38 @@ private:
     char input_manage();
 public:
     main_menu();
-    int run_start_menu();
+    int run_main_menu(Player *_current_user);
 };
+
+//----------------------------------------------
+
+class rule: public Interface{
+public:
+    rule(){}
+    int show_rule();
+};
+
+//----------------------------------------------
+/*
+class leading_board: public Interface{
+private:
+    int page;
+    json userdata;
+    string key;
+
+    void run_UI();
+    void bar_display();
+    void rank_table_display();
+    void sort_leading_board();
+    json load_user();
+    void input_manage();
+public:
+    leading_board();
+    int show_leading_board();
+};
+
+*/
+
+
 
 #endif

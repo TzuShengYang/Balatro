@@ -42,8 +42,25 @@ void Item::switch_item_status(){
     is_selected ^= true;
 }
 
-
 //Item
+//-----------------------------------------------------------
+
+card::card(){}
+
+void card::set_card(int _suit, int _number){
+    suit = _suit;
+    number = _number;
+}
+
+unsigned int card::get_card_suit(){
+    return suit;
+}
+
+unsigned int card::get_card_num(){
+    return number;
+} 
+
+//card
 //-----------------------------------------------------------
 
 
