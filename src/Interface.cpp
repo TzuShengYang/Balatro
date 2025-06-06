@@ -1,6 +1,7 @@
 #include "../inc/Interface.h"
 #include "../inc/Item.h"
 #include "../inc/InterfaceNo.h"
+#include "../inc/Player.h"
 
 using namespace std;
 
@@ -173,8 +174,14 @@ sign_up::sign_up(): Interface(){
     current_user_password = "";
 }
 
-int sign_up::run_sign_up(){
+int sign_up::run_sign_up(Player *_current_user){
     run_UI();
+
+    _current_user -> set_username(my_login_system.get_username());
+    _current_user -> set_user_currency(my_login_system.get_user_currency());
+    _current_user -> set_user_experience(my_login_system.get_user_experience());
+    _current_user -> set_user_level(my_login_system.get_user_level());
+
 
     current_user_account = "";
     current_user_password = "";
@@ -213,6 +220,10 @@ void sign_up::run_UI(){
             cout << "Account has EXISTED.";
             cin >> input;
             input = 'i';
+        } else if (current_user_account.length() == 0){
+            cout << "Account can NOT be EMPTY.";
+            cin >> input;
+            input = 'i';
         } else {
             break;
         }
@@ -220,19 +231,29 @@ void sign_up::run_UI(){
 
     my_login_system.set_account(current_user_account);
 
-     do {
-        system("clear");
-        show_balatro();
-        block_display("ACCOUNT", current_user_account, false);
-        block_display("PASSWORD", current_user_password, true);
+    while (true){
+        do {
+            system("clear");
+            show_balatro();
+            block_display("ACCOUNT", current_user_account, false);
+            block_display("PASSWORD", current_user_password, true);
 
-        cin >> input;
-        if (input == '-' && current_user_password.length() > 0){
-            current_user_password = current_user_password.substr(0, current_user_password.length() - 1);
-        }  else if (char_is_valid(input)){
-            current_user_password += input;
+            cin >> input;
+            if (input == '-' && current_user_password.length() > 0){
+                current_user_password = current_user_password.substr(0, current_user_password.length() - 1);
+            }  else if (char_is_valid(input)){
+                current_user_password += input;
+            }
+        } while (input != '=');
+
+        if (current_user_account.length() == 0){
+            cout << "Account can NOT be EMPTY.";
+            cin >> input;
+            input = 'i';
+        } else {
+            break;
         }
-    } while (input != '=');
+    }
 
     my_login_system.set_password(current_user_password);
 
@@ -266,8 +287,13 @@ sign_in::sign_in(): Interface(){
     current_user_password = "";
 }
 
-int sign_in::run_sign_in(){
+int sign_in::run_sign_in(Player *_current_user){
     run_UI();
+
+    _current_user -> set_username(my_login_system.get_username());
+    _current_user -> set_user_currency(my_login_system.get_user_currency());
+    _current_user -> set_user_experience(my_login_system.get_user_experience());
+    _current_user -> set_user_level(my_login_system.get_user_level());
 
     current_user_account = "";
     current_user_password = "";
@@ -306,6 +332,10 @@ void sign_in::run_UI(){
             cout << "Account NOT FOUND.";
             cin >> input;
             input = 'i';
+        } else if (current_user_account.length() == 0){
+            cout << "Account can NOT be EMPTY.";
+            cin >> input;
+            input = 'i';
         } else {
             break;
         }
@@ -314,6 +344,7 @@ void sign_in::run_UI(){
     my_login_system.set_account(current_user_account);
 
     while (true){
+        
         do {
             system("clear");
             show_balatro();
@@ -328,14 +359,17 @@ void sign_in::run_UI(){
             }
         } while (input != '=');
 
-        if (my_login_system.password_is_valid(current_user_password)){
-            return;
+        if (current_user_account.length() == 0){
+            cout << "Account can NOT be EMPTY.";
+            cin >> input;
+            input = 'i';
+        } else if (my_login_system.password_is_valid(current_user_password)){
+            break;
         } else {
             cout << "Password is INCORRECT.";
             cin >> input;
             input = 'i';
         }
-
     }
 
     my_login_system.set_password(current_user_password);
@@ -360,3 +394,12 @@ void sign_in::block_display(string title, string content, bool blod){
     }
 
 }
+
+//sign up
+//----------------------------------------------------------
+
+
+
+//main menu
+//----------------------------------------------------------
+

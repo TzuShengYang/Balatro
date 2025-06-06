@@ -37,11 +37,11 @@ void GameManager::implement_game(){
                 break;
 
             case SIGN_UP:
-                status = sign_up_UI -> run_sign_up();
+                status = sign_up_UI -> run_sign_up(current_user);
                 break;
 
             case SIGN_IN:
-                status = sign_in_UI -> run_sign_in();
+                status = sign_in_UI -> run_sign_in(current_user);
                 break;
 
             default:

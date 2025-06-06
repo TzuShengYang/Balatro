@@ -4,6 +4,7 @@
 #include "Item.h"
 #include "json.hpp"
 #include "LoginSystem.h"
+#include "Player.h"
 
 #include <vector>
 #include <iostream>
@@ -65,7 +66,7 @@ private:
     bool char_is_valid(char input);
 public:
     sign_up();
-    int run_sign_up();
+    int run_sign_up(Player *_current_user);
 };
 
 //----------------------------------------------
@@ -82,9 +83,23 @@ private:
     bool char_is_valid(char input);
 public:
     sign_in();
-    int run_sign_in();
+    int run_sign_in(Player *_current_user);
 };
 
 //----------------------------------------------
+
+class main_menu: public Interface{
+private:
+    vector<Item*> buttons;
+    void set_item();
+    void run_UI();
+    void add_item(Item *obj);
+    void item_display(int item_width, int item_height = 3);
+    Item *get_item(int index);
+    char input_manage();
+public:
+    main_menu();
+    int run_start_menu();
+};
 
 #endif
