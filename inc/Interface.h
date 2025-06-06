@@ -60,6 +60,7 @@ private:
 
     string current_user_account;
     string current_user_password;
+    bool successful;
 
     void run_UI();
     void block_display(string title, string content, bool blod);
@@ -77,6 +78,7 @@ private:
 
     string current_user_account;
     string current_user_password;
+    bool successful;
 
     void run_UI();
     void block_display(string title, string content, bool blod);

@@ -172,19 +172,22 @@ char start_menu::input_manage(){
 sign_up::sign_up(): Interface(){
     current_user_account = "";
     current_user_password = "";
+    successful = false;
 }
 
 int sign_up::run_sign_up(Player *_current_user){
     run_UI();
 
-    _current_user -> set_username(my_login_system.get_username());
-    _current_user -> set_user_currency(my_login_system.get_user_currency());
-    _current_user -> set_user_experience(my_login_system.get_user_experience());
-    _current_user -> set_user_level(my_login_system.get_user_level());
-    _current_user -> set_user_highest(my_login_system.get_user_highest());
-
+    if (successful){
+         _current_user -> set_username(my_login_system.get_username());
+        _current_user -> set_user_currency(my_login_system.get_user_currency());
+        _current_user -> set_user_experience(my_login_system.get_user_experience());
+        _current_user -> set_user_level(my_login_system.get_user_level());
+        _current_user -> set_user_highest(my_login_system.get_user_highest());
+    }
     current_user_account = "";
     current_user_password = "";
+    successful = false;
 
     if (final_choice == 1){
         return MAIN_MENU;
@@ -216,12 +219,12 @@ void sign_up::run_UI(){
             }
         } while (input != '=');
 
-        if (my_login_system.have_existed(current_user_account)){
-            cout << "Account has EXISTED.";
+        if (current_user_account.length() == 0){
+            cout << "Account can NOT be EMPTY.";
             cin >> input;
             input = 'i';
-        } else if (current_user_account.length() == 0){
-            cout << "Account can NOT be EMPTY.";
+        } else if (my_login_system.have_existed(current_user_account)){
+            cout << "Account has EXISTED.";
             cin >> input;
             input = 'i';
         } else {
@@ -259,6 +262,7 @@ void sign_up::run_UI(){
 
     my_login_system.save_user();
     final_choice = 1;
+    successful = true;
 }
 
 void sign_up::block_display(string title, string content, bool blod){
@@ -285,16 +289,21 @@ void sign_up::block_display(string title, string content, bool blod){
 sign_in::sign_in(): Interface(){
     current_user_account = "";
     current_user_password = "";
+    successful = false;
+    
 }
 
 int sign_in::run_sign_in(Player *_current_user){
     run_UI();
 
-    _current_user -> set_username(my_login_system.get_username());
-    _current_user -> set_user_currency(my_login_system.get_user_currency());
-    _current_user -> set_user_experience(my_login_system.get_user_experience());
-    _current_user -> set_user_level(my_login_system.get_user_level());
+    if (successful){
+        _current_user -> set_username(my_login_system.get_username());
+        _current_user -> set_user_currency(my_login_system.get_user_currency());
+        _current_user -> set_user_experience(my_login_system.get_user_experience());
+        _current_user -> set_user_level(my_login_system.get_user_level());
+        _current_user -> set_user_highest(my_login_system.get_user_highest());
 
+    }
     current_user_account = "";
     current_user_password = "";
 
@@ -328,12 +337,12 @@ void sign_in::run_UI(){
             }
         } while (input != '=');
 
-        if (!my_login_system.have_existed(current_user_account)){
-            cout << "Account NOT FOUND.";
+        if (current_user_account.length() == 0){
+            cout << "Account can NOT be EMPTY.";
             cin >> input;
             input = 'i';
-        } else if (current_user_account.length() == 0){
-            cout << "Account can NOT be EMPTY.";
+        } else if (!my_login_system.have_existed(current_user_account)){
+            cout << "Account NOT FOUND.";
             cin >> input;
             input = 'i';
         } else {
@@ -373,7 +382,7 @@ void sign_in::run_UI(){
     }
 
     my_login_system.set_password(current_user_password);
-
+    successful = true;
     final_choice = 1;
 }
 
@@ -516,85 +525,108 @@ char main_menu::input_manage(){
 int rule::show_rule(){
     int page = 0;
     char choice;
+    system("clear");
+    cout << "╔══════════════════════════════════════════════════╗\n";
+    cout << "║                                                  ║\n";
+    cout << "║             Use 'WASD' keys to select            ║\n";
+    cout << "║               Use '=' key to enter               ║\n";
+    cout << "║            Use '-' key to delete input           ║\n";
+    cout << "║                                                  ║\n";
+    cout << "║                                                  ║\n";
+    cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
+    cout << "║           A ┃ < ┃   page 1/4   ┃ > ┃ D           ║\n";
+    cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
+    cout << "║                                                  ║\n";
+    cout << "╚══════════════════════════════════════════════════╝\n";
     while (cin >> choice){
         if ((choice == 'D' || choice == 'd') && page != 3){
             page += 1;
         } else if ((choice == 'A' || choice == 'a') && page != 0) {
             page -= 1;
+        } else if (choice == '=' && page == 3) {
+            break;
+        }
+
+        switch (page) {
+            case 0:
+                system ("clear");
+                cout << "╔══════════════════════════════════════════════════╗\n";
+                cout << "║                                                  ║\n";
+                cout << "║             Use 'WASD' keys to select            ║\n";
+                cout << "║               Use '=' key to enter               ║\n";
+                cout << "║            Use '-' key to delete input           ║\n";
+                cout << "║                                                  ║\n";
+                cout << "║                                                  ║\n";
+                cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
+                cout << "║           A ┃ < ┃   page 1/4   ┃ > ┃ D           ║\n";
+                cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
+                cout << "║                                                  ║\n";
+                cout << "╚══════════════════════════════════════════════════╝\n";
+                break;
+            case 1:
+                system ("clear");
+                cout << "╔══════════════════════════════════════════════════╗\n";
+                cout << "║                                                  ║\n";
+                cout << "║          There are 4 rounds in one game          ║\n";
+                cout << "║        Each round has 3 times to play card       ║\n";
+                cout << "║  You can discard 1~5 cards 3 times in each round ║\n";
+                cout << "║                                                  ║\n";
+                cout << "║                                                  ║\n";
+                cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
+                cout << "║           A ┃ < ┃   page 2/4   ┃ > ┃ D           ║\n";
+                cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
+                cout << "║                                                  ║\n";
+                cout << "╚══════════════════════════════════════════════════╝\n";
+                break;
+            case 2:
+                system ("clear");
+                cout << "╔══════════════════════════════════════════════════╗\n";
+                cout << "║                                                  ║\n";
+                cout << "║                                                  ║\n";
+                cout << "║    The score you gain will convert to currency   ║\n";
+                cout << "║     You can use currency to buy skill cards      ║\n";
+                cout << "║                                                  ║\n";
+                cout << "║                                                  ║\n";
+                cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
+                cout << "║           A ┃ < ┃   page 3/4   ┃ > ┃ D           ║\n";
+                cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
+                cout << "║                                                  ║\n";
+                cout << "╚══════════════════════════════════════════════════╝\n";
+                break;
+            case 3:
+                system ("clear");
+                cout << "╔══════════════════════════════════════════════════╗\n";
+                cout << "║                                                  ║\n";
+                cout << "║                                                  ║\n";
+                cout << "║            Now try your best to become           ║\n";
+                cout << "║               the top 1 player !!!               ║\n";
+                cout << "║                                                  ║\n";
+                cout << "║                                                  ║\n";
+                cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
+                cout << "║           A ┃ < ┃   page 4/4   ┃ > ┃ D           ║\n";
+                cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
+                cout << "║              Enter '=' to start ...              ║\n";
+                cout << "╚══════════════════════════════════════════════════╝\n";
+                break;
+            default:
+                system ("clear");
+                cout << "╔══════════════════════════════════════════════════╗\n";
+                cout << "║                                                  ║\n";
+                cout << "║             Use 'WASD' keys to select            ║\n";
+                cout << "║               Use '=' key to enter               ║\n";
+                cout << "║            Use '-' key to delete input           ║\n";
+                cout << "║                                                  ║\n";
+                cout << "║                                                  ║\n";
+                cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
+                cout << "║           A ┃ < ┃   page 1/4   ┃ > ┃ D           ║\n";
+                cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
+                cout << "║                                                  ║\n";
+                cout << "╚══════════════════════════════════════════════════╝\n";
+                break;
         }
     }
 
-    switch (page) {
-        case 0:
-            cout << "╔══════════════════════════════════════════════════╗\n";
-            cout << "║                                                  ║\n";
-            cout << "║             Use 'WASD' keys to select            ║\n";
-            cout << "║               Use '=' key to enter               ║\n";
-            cout << "║            Use '-' key to delete input           ║\n";
-            cout << "║                                                  ║\n";
-            cout << "║                                                  ║\n";
-            cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
-            cout << "║           A ┃ < ┃   page 1/4   ┃ > ┃ D           ║\n";
-            cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
-            cout << "║                                                  ║\n";
-            cout << "╚══════════════════════════════════════════════════╝\n";
-            break;
-        case 1:
-            cout << "╔══════════════════════════════════════════════════╗\n";
-            cout << "║                                                  ║\n";
-            cout << "║          There are 4 rounds in one game          ║\n";
-            cout << "║        Each round has 3 times to play card       ║\n";
-            cout << "║  You can discard 1~5 cards 3 times in each round ║\n";
-            cout << "║                                                  ║\n";
-            cout << "║                                                  ║\n";
-            cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
-            cout << "║           A ┃ < ┃   page 2/4   ┃ > ┃ D           ║\n";
-            cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
-            cout << "║                                                  ║\n";
-            cout << "╚══════════════════════════════════════════════════╝\n";
-            break;
-        case 2:
-            cout << "╔══════════════════════════════════════════════════╗\n";
-            cout << "║                                                  ║\n";
-            cout << "║                                                  ║\n";
-            cout << "║    The score you gain will convert to currency   ║\n";
-            cout << "║     You can use currency to buy skill cards      ║\n";
-            cout << "║                                                  ║\n";
-            cout << "║                                                  ║\n";
-            cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
-            cout << "║           A ┃ < ┃   page 3/4   ┃ > ┃ D           ║\n";
-            cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
-            cout << "║                                                  ║\n";
-            cout << "╚══════════════════════════════════════════════════╝\n";
-            break;
-        case 3:
-            cout << "╔══════════════════════════════════════════════════╗\n";
-            cout << "║                                                  ║\n";
-            cout << "║                                                  ║\n";
-            cout << "║            Now try your best to become           ║\n";
-            cout << "║               the top 1 player !!!               ║\n";
-            cout << "║                                                  ║\n";
-            cout << "║                                                  ║\n";
-            cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
-            cout << "║           A ┃ < ┃   page 4/4   ┃ > ┃ D           ║\n";
-            cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
-            cout << "║              Enter '=' to start ...              ║\n";
-            cout << "╚══════════════════════════════════════════════════╝\n";
-            break;
-        default:
-            cout << "╔══════════════════════════════════════════════════╗\n";
-            cout << "║                                                  ║\n";
-            cout << "║             Use 'WASD' keys to select            ║\n";
-            cout << "║               Use '=' key to enter               ║\n";
-            cout << "║            Use '-' key to delete input           ║\n";
-            cout << "║                                                  ║\n";
-            cout << "║                                                  ║\n";
-            cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
-            cout << "║           A ┃ < ┃   page 1/4   ┃ > ┃ D           ║\n";
-            cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
-            cout << "║                                                  ║\n";
-            cout << "╚══════════════════════════════════════════════════╝\n";
-    }
+    
     
     return START_MENU;
 } 

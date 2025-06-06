@@ -52,9 +52,9 @@ void GameManager::implement_game(){
                 status = main_menu_UI -> run_main_menu(current_user);
                 break;
 
-            //case RULE:
-            //    status = rule_UI -> show_rule();
-            //    break;
+            case RULE:
+                status = rule_UI -> show_rule();
+                break;
 
             default:
                 return;
