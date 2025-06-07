@@ -9,16 +9,6 @@ void wait(){
 
 Game::Game(): Interface(){
     my_score_board = new score_board;
-    selected_card_number = 0;
-    sort_status = 0;
-    score = 0;
-    inventory_button_is_selected = true;
-    hand_button_is_selected = false;
-    discard__button_is_selected = false;
-
-
-    reset_full_deck();
-    set_goods();
 }
 
 void Game::reset_full_deck(){
@@ -185,6 +175,7 @@ void Game::show_table(){
     for (int i = 0;i < 5;i++){
         cout << "          ";
         cout << "            ";
+        cout << "          ";
         for (int j = 0;j < 5;j++){
             if (i == 0){
                 cout << "╔═════╗";
@@ -204,14 +195,19 @@ void Game::show_table(){
 }
 
 void Game::show_table_in_calculating(){
-    string add_process = "                      ";
+    string add_process = "                                ";
+    char input;
     for (int card_idx = -1;card_idx <= selected_card_number;card_idx++){
+        
+        system("clear");
         show_score_board();
         for (int i = 0;i < 5;i++){
+            cout << "          ";
             cout << "          ";
             cout << "            ";
 
             for (int j = 0;j < selected_card_number;j++){
+                
                 if (i == 0){
                     cout << "╔═════╗";
                 } else if (i == 1 || i == 3){
@@ -253,27 +249,35 @@ void Game::show_table_in_calculating(){
         }
 
         if (card_idx >= 0 && card_idx < selected_card_number){
-            if (table.at(card_idx) -> get_card_num() == 1){
-                add_process += "  +11   ";
-            } else if (table.at(card_idx) -> get_card_num() >= 10){
-                add_process += "  +10   ";
+            if (table.at(card_idx) -> card_is_used()){
+                if (table.at(card_idx) -> get_card_num() == 1){
+                    add_process += "  +11   ";
+                } else if (table.at(card_idx) -> get_card_num() >= 10){
+                    add_process += "  +10   ";
+                } else {
+                    add_process += "   +" + to_string(table.at(card_idx) -> get_card_num()) + "   ";
+                }
             } else {
-                add_process += "   +" + to_string(table.at(card_idx) -> get_card_num()) + "   ";
+                add_process += "        ";
             }
             cout << add_process << "\n";
         } else if (card_idx == selected_card_number){
+            for (int x = 0;x < 5 - selected_card_number;x++) add_process += "        ";
             add_process += "   |  X ";
             cout << add_process;
-            cout << my_score_board -> get__multiplier(table) << "\n";
+            cout << my_score_board -> get__multiplier(table);
+            cout << "   ( " << my_score_board -> get_type(table) << " )\n";
         } else {
             cout << "\n";
         }
+
+        cout << "\n";
         
         show_hand_and_button_in_calculating();
         wait();
     }
      
-       
+    cin >> input;
 }
 
 void Game::show_hand_and_button(){
@@ -300,12 +304,12 @@ void Game::show_hand_and_button(){
                 if (i == 0){
                     cout << "╔═════╗";
                 } else if (i == 1 || i == 3){
-                    cout << "   ";
+                    cout << "║  ";
                     if (hand.at(j) -> get_card_suit() == 0) cout << "♠";
                     else if (hand.at(j) -> get_card_suit() == 1) cout << "♥";
                     else if (hand.at(j) -> get_card_suit() == 2) cout << "♦";
                     else cout << "♣";
-                    cout << "   ";
+                    cout << "  ║";
                 } else if (i == 2){
                     cout << "║ ";
                     if (hand.at(j) -> get_card_num() == 1)       cout << " A ";
@@ -324,12 +328,12 @@ void Game::show_hand_and_button(){
                 if (i == 0){
                     cout << ".-----.";
                 } else if (i == 1 || i == 3){
-                    cout << "   ";
+                    cout << "|  ";
                     if (hand.at(j) -> get_card_suit() == 0) cout << "♠";
                     else if (hand.at(j) -> get_card_suit() == 1) cout << "♥";
                     else if (hand.at(j) -> get_card_suit() == 2) cout << "♦";
                     else cout << "♣";
-                    cout << "   ";
+                    cout << "  |";
                 } else if (i == 2){
                     cout << "| ";
                     if (hand.at(j) -> get_card_num() == 1)       cout << " A ";
@@ -349,11 +353,11 @@ void Game::show_hand_and_button(){
 
         if (i == 0 || i == 4) cout << "";
         else if (i == 1 || i == 3){
-            if (hand_button_is_selected) cout << "   #=======#  ";
-            else cout << "    -------   ";
+            if (hand_button_is_selected) cout << "   #========#  ";
+            else cout << "    --------   ";
         } else {
-            if (hand_button_is_selected) cout << "   ║  HAND ║  ";
-            else cout << "   |  HAND |  ";
+            if (hand_button_is_selected) cout << "   ║  HAND  ║  ";
+            else cout << "   |  HAND  |  ";
         }
 
         if (i == 0 || i == 4) cout << "           ";
@@ -367,13 +371,16 @@ void Game::show_hand_and_button(){
 
         cout << "\n";
     }
+
+    show_sort_approach();
 }
 
 void Game::show_hand_and_button_in_calculating(){
+    char input;
     for (int i = 0;i < 5;i++){
         cout << "          ";
         //inventory
-        if (i == 0 || i == 4) cout << "           ";
+        if (i == 0 || i == 4) cout << "             ";
         else if (i == 1 || i == 3){
             if (inventory_button_is_selected) cout << "#=========#  ";
             else cout << " ---------   ";
@@ -426,11 +433,11 @@ void Game::show_hand_and_button_in_calculating(){
 
         if (i == 0 || i == 4) cout << "           ";
         else if (i == 1 || i == 3){
-            if (hand_button_is_selected) cout << "#=======#";
-            else cout << " ------- ";
+            if (hand_button_is_selected) cout << "   #========#  ";
+            else cout << "    --------   ";
         } else {
-            if (hand_button_is_selected) cout << "║  HAND ║";
-            else cout << "|  HAND |";
+            if (hand_button_is_selected) cout << "   ║  HAND  ║  ";
+            else cout << "   |  HAND  |  ";
         }
 
         if (i == 0 || i == 4) cout << "           ";
@@ -444,6 +451,33 @@ void Game::show_hand_and_button_in_calculating(){
 
         cout << "\n";
     }
+}
+
+void Game::show_result(){
+    char input;
+    cout << "\n\n\n";
+    cout << "                                         " << setw(20) << left << "TOTAL SCORE : " << my_score_board -> get_score() << "\n";
+    cout << "                                         " << setw(20) << left << "EXPERIENCE: " << (((my_score_board -> get_score() - 1) / 100) * 100) + 100 << "\n";
+    cout << "                                         " << setw(20) << left << "CURRENCY: " << ((my_score_board -> get_score() - 1) / 10) << "\n";
+
+    current_player -> gain_exp((((my_score_board -> get_score() - 1) / 100) * 100) + 100);
+    current_player -> gain_currency(((my_score_board -> get_score() - 1) / 20));
+    current_player -> set_user_highest(max((int)current_player -> get_user_highest(), my_score_board -> get_score()));
+
+    cout << "\n";
+    cout << "                                ----------- gameplay statistic -----------\n\n";
+    cout << "                                         " << setw(20) << left << "PLAY CARDS: " << play_hand_number << "\n";
+    cout << "                                         " << setw(20) << left << "DISCARD CARDS: " << discard_card_number << "\n\n";
+    cout << "                                         " << setw(20) << left << "Straight Flush: " << my_score_board -> get_times("Straight Flush") << "\n";
+    cout << "                                         " << setw(20) << left << "Four of a Kind: " << my_score_board -> get_times("Four of a Kind") << "\n";
+    cout << "                                         " << setw(20) << left << "Full House: " << my_score_board -> get_times("Full House") << "\n";
+    cout << "                                         " << setw(20) << left << "Flush: " << my_score_board -> get_times("Flush") << "\n";
+    cout << "                                         " << setw(20) << left << "Straight: " << my_score_board -> get_times("Straight") << "\n";
+    cout << "                                         " << setw(20) << left << "Three of a Kind: " << my_score_board -> get_times("Three of a Kind") << "\n";
+    cout << "                                         " << setw(20) << left << "Two Pair: " << my_score_board -> get_times("Two Pair") << "\n";
+    cout << "                                         " << setw(20) << left << "Pair: " << my_score_board -> get_times("Pair") << "\n";
+    cout << "                                         " << setw(20) << left << "High Card: " << my_score_board -> get_times("High Card") << "\n\n";
+    cin >> input;
 }
 
 void Game::show_shop(){
@@ -461,9 +495,9 @@ void Game::show_score_board(){
 
 void Game::show_sort_approach(){
     if (sort_status == 0){
-        cout << "Sort by NUMBER";
+        cout << "Sort by NUMBER\n";
     } else {
-        cout << "Sort by SUIT";
+        cout << "Sort by SUIT\n";
     }
 }
 
@@ -497,9 +531,10 @@ void Game::run_game_UI(){
     add_card_to_hand(8);
     
     while (true){   
-        if (play_hand <= 0) break;
+        if (play_hand <= 0) return;
 
         do {
+            system("clear");
             show_score_board();
             show_table();
             show_hand_and_button();
@@ -510,16 +545,27 @@ void Game::run_game_UI(){
         if (final_choice == 0){
             
         } else if (final_choice == 9){
-            put_card_from_hand_to_table();
-            calculate_score_of_table();
-            chosen_card_removal();
-            unchoose_hand_card();
-            add_card_to_hand(selected_card_number);
-            table.clear();
-            selected_card_number = 0;
-            play_hand--;
+            if (selected_card_number == 0){
+                cout << "You have to select at least ONE card.";
+                cin >> input;
+                input = 'i';
+            } else {
+                put_card_from_hand_to_table();
+                calculate_score_of_table();
+                chosen_card_removal();
+                unchoose_hand_card();
+                add_card_to_hand(selected_card_number);
+                play_hand_number += selected_card_number;
+                table.clear();
+                selected_card_number = 0;
+                play_hand--;
+            }
         } else if (final_choice == 10){
-            if (discard_card <= 0){
+            if (selected_card_number == 0){
+                cout << "You have to select at least ONE card.";
+                cin >> input;
+                input = 'i';
+            } else if (discard_card <= 0){
                 cout << "You can not discard cards anymore.";
                 cin >> input;
                 input = 'i';
@@ -527,6 +573,7 @@ void Game::run_game_UI(){
                 discard_card_from_hand();
                 unchoose_hand_card();
                 add_card_to_hand(selected_card_number);
+                discard_card_number += selected_card_number;
                 selected_card_number = 0;
                 discard_card--;
             }
@@ -570,29 +617,147 @@ char Game::input_manage(){
 }
 
 void Game::small_blind(){
-    run_game_UI();
-}
+    char input = 'i';
+    bool play = true;
+    do {
+        system("clear");
+        cout << "                            ╔█████╗ ███╗   ███╗ █████╗ ██╗     ██╗     \n";
+        cout << "                           ██╔════╝ ████╗ ████║██╔══██╗██║     ██║     \n";
+        cout << "                            ██████╗ ██╔████╔██║███████║██║     ██║     \n";
+        cout << "                            ╚════██╗██║╚██╔╝██║██╔══██║██║     ██║     \n";
+        cout << "                            ██████╔╝██║ ╚═╝ ██║██║  ██║███████╗███████╗\n";
+        cout << "                            ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝\n";
 
-void Game::mid_blind(){
-    run_game_UI();
+        cout << "                             ██████╗  ██╗      ██╗ ███╗   ██╗ ██████╗ \n";
+        cout << "                             ██╔══██╗ ██║      ██║ ████╗  ██║ ██╔══██╗\n";
+        cout << "                             ██████╔╝ ██║      ██║ ██╔██╗ ██║ ██║  ██║\n";
+        cout << "                             ██╔══██╗ ██║      ██║ ██║╚██╗██║ ██║  ██║\n";
+        cout << "                             ██████╔╝ ███████╗ ██║ ██║ ╚████║ ██████╔╝\n";
+        cout << "                             ╚═════╝  ╚══════╝ ╚═╝ ╚═╝  ╚═══╝ ╚═════╝ \n";
+        cout << "\n\n\n";
+
+        if (input == 'd' || input == 'D'){
+            play = false;
+        } else if (input == 'a' || input == 'A'){
+            play = true;
+        }
+
+
+        if (play){
+            cout << "               #========================#              ------------------------ \n";
+            cout << "               ║        P L A Y         ║             |         S K I P        |\n";
+            cout << "               #========================#              ------------------------ \n";
+        } else {
+            cout << "                ------------------------              #========================#\n";
+            cout << "               ║        P L A Y         ║             |         S K I P        |\n";
+            cout << "                ------------------------              #========================#\n";
+        }
+
+        cin >> input;
+        
+    } while (input != '=');
+
+    if (play) run_game_UI();
 }
 
 void Game::big_blind(){
+    char input = 'i';
+    bool play = true;
+    do {
+        system("clear");
+        cout << "                                       ██████╗  ██╗ ╔██████╗ \n";
+        cout << "                                       ██╔══██╗ ██║ ██║     \n";
+        cout << "                                       ██████╔╝ ██║ ██║  ███╗\n";
+        cout << "                                       ██╔══██╗ ██║ ██║   ██║\n";
+        cout << "                                       ██████╔╝ ██║ ╚██████╔╝\n";
+        cout << "                                       ╚═════╝  ╚═╝  ╚═════╝ \n";
+
+        cout << "                             ██████╗  ██╗      ██╗ ███╗   ██╗ ██████╗ \n";
+        cout << "                             ██╔══██╗ ██║      ██║ ████╗  ██║ ██╔══██╗\n";
+        cout << "                             ██████╔╝ ██║      ██║ ██╔██╗ ██║ ██║  ██║\n";
+        cout << "                             ██╔══██╗ ██║      ██║ ██║╚██╗██║ ██║  ██║\n";
+        cout << "                             ██████╔╝ ███████╗ ██║ ██║ ╚████║ ██████╔╝\n";
+        cout << "                            ╚═════╝  ╚══════╝ ╚═╝ ╚═╝  ╚═══╝ ╚═════╝ \n";
+        cout << "\n\n\n";
+
+        if (input == 'd' || input == 'D'){
+            play = false;
+        } else if (input == 'a' || input == 'A'){
+            play = true;
+        }
+
+        if (play){
+            cout << "               #========================#              ------------------------ \n";
+            cout << "               ║        P L A Y         ║             |         S K I P        |\n";
+            cout << "               #========================#              ------------------------ \n";
+        } else {
+            cout << "                ------------------------              #========================#\n";
+            cout << "               |        P L A Y         |             ║         S K I P        ║\n";
+            cout << "                ------------------------              #========================#\n";
+        }
+
+        cin >> input;
+
+    } while (input != '=');
+
+    if (play) run_game_UI();
+}
+
+void Game::the_manacle(){
+    char input = 'i';
+
+        system("clear");
+        cout << "                                       ████████╗██╗  ██╗███████╗\n";
+        cout << "                                       ╚══██╔══╝██║  ██║██╔════╝\n";
+        cout << "                                          ██║   ███████║█████╗  \n";
+        cout << "                                          ██║   ██╔══██║██╔══╝  \n";
+        cout << "                                          ██║   ██║  ██║███████╗\n";
+        cout << "                                          ╚═╝   ╚═╝  ╚═╝╚══════╝\n";
+
+
+        cout << "              ████╗    ████╗ █████╗  ███╗   ██╗█████╗   ██████╗ ██╗      ███████╗ \n";
+        cout << "              ████║    ████║ ██╔══██╗████╗  ██║██╔══██╗██╔════╝ ██║      ██╔════╝\n";
+        cout << "              ██╔██║  ██╔██║ ███████║██╔██╗ ██║███████║██║      ██║      █████╗  \n";
+        cout << "              ██║╚██╗██╔╝██║ ██╔══██║██║╚██╗██║██╔══██║██║      ██║      ██╔══╝  \n";
+        cout << "              ██║ ╚███╔╝ ██║ ██║  ██║██║ ╚████║██║  ██║╚██████╗ ███████╗ ███████╗\n";
+        cout << "              ╚═╝  ╚══╝  ╚═╝ ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝ ╚══════╝\\n";
+
+        cout << "\n\n\n";
+
+        cin >> input;
+
     run_game_UI();
 }
 
 int Game::run_game(Player *_current_user){
     current_player = _current_user;
 
-    for (int i = 0;i < 4;i++){
+    selected_card_number = 0;
+    sort_status = 0;
+    score = 0;
+    inventory_button_is_selected = true;
+    hand_button_is_selected = false;
+    discard__button_is_selected = false;
+    play_hand_number = 0;
+    discard_card_number = 0;
+
+    my_score_board -> init();
+
+
+    reset_full_deck();
+    set_goods();
+
+    for (int i = 0;i < 1;i++){
         round = i;
-        if (round) show_shop();
+        show_shop();
         small_blind();
         show_shop();
-        mid_blind();
-        show_shop();
         big_blind();
+        show_shop();
+        the_manacle();
     }
+
+    show_result();
 
     return MAIN_MENU;
     
@@ -605,6 +770,23 @@ int Game::run_game(Player *_current_user){
 
 score_board::score_board(){
     total_score = 0;
+    cur_score = 0;
+    hand_type_times = {
+        {"High Card", 0},
+        {"Pair", 0},
+        {"Two Pair", 0},
+        {"Three of a Kind", 0},
+        {"Straight", 0},
+        {"Flush", 0},
+        {"Full House", 0},
+        {"Four of a Kind", 0},
+        {"Straight Flush", 0}
+    };
+}
+
+void score_board::init(){
+    total_score = 0;
+    cur_score = 0;
     hand_type_times = {
         {"High Card", 0},
         {"Pair", 0},
@@ -687,7 +869,7 @@ string score_board::set_hand_type_times(vector<card*> _cards){
     }*/
 
     bool is_straight = false;
-    if (_cards.at(0) -> get_card_num() == _cards.at(1) -> get_card_num() + 1 && 
+    if (card_count >= 5 && _cards.at(0) -> get_card_num() == _cards.at(1) -> get_card_num() + 1 && 
         _cards.at(1) -> get_card_num() == _cards.at(2) -> get_card_num() + 1 && 
         _cards.at(2) -> get_card_num() == _cards.at(3) -> get_card_num() + 1 && 
         _cards.at(3) -> get_card_num() == _cards.at(4) -> get_card_num() + 1)
@@ -696,7 +878,7 @@ string score_board::set_hand_type_times(vector<card*> _cards){
         }
     
     // 10JQKA
-    if (_cards.at(0) -> get_card_num() == 1 && _cards.at(1) -> get_card_num() == 13 &&
+    if (card_count >= 5 && _cards.at(0) -> get_card_num() == 1 && _cards.at(1) -> get_card_num() == 13 &&
         _cards.at(2) -> get_card_num() == 12 && _cards.at(3) -> get_card_num() == 11 && _cards.at(4) -> get_card_num() == 10)
         {
             is_straight = true;
@@ -762,31 +944,84 @@ void score_board::calculate_score(vector<card*> _cards){
     
     int card_values_sum = 0;
     
-    if(hand_type == "High Card"){
+    if (hand_type == "High Card"){
         int max_value = 0;
-        for(auto card : _cards){
-            int card_value = get_card_value(card->get_card_num());
-            if(card_value > max_value){
+        int max_index = 0;
+        for (int i=0; i<_cards.size(); i++){
+            int card_value = get_card_value(_cards[i]->get_card_num());
+            if (card_value > max_value){
                 max_value = card_value;
+                max_index = i;
             }
         }
+
+        _cards[max_index] -> set_card_which_is_used();
         card_values_sum = max_value;
-    }
-    else if(hand_type == "Two Pair"){
+        
+    } 
+    else if (hand_type == "Pair") {
         map<int, int> number_count;
-        for(auto card : _cards){
-            number_count[card->get_card_num()]++;
+        map<int, vector<int>> number_positions;
+        
+        for (int i = 0; i < _cards.size(); i++){
+            int card_num = _cards[i]->get_card_num();
+            number_count[card_num]++;
+            number_positions[card_num].push_back(i);
         }
         
-        for(auto& pair : number_count){
+        for (auto& pair : number_count){
             if(pair.second >= 2){
                 card_values_sum += get_card_value(pair.first) * 2;
+                for(int index : number_positions[pair.first]){
+                    _cards[index]->set_card_which_is_used();
+                }
             }
         }
+    }
+    else if (hand_type == "Two Pair"){
+        map<int, int> number_count;
+        map<int, vector<int>> number_positions;
+        
+        for (int i = 0; i < _cards.size(); i++){
+            int card_num = _cards[i]->get_card_num();
+            number_count[card_num]++;
+            number_positions[card_num].push_back(i);
+        }
+        
+        for (auto& pair : number_count){
+            if(pair.second >= 2){
+                card_values_sum += get_card_value(pair.first) * 2;
+                for(int index : number_positions[pair.first]){
+                    _cards[index]->set_card_which_is_used();
+                }
+            }
+        }
+    }
+    else if (hand_type == "Three of a Kind"){
+        map<int, int> number_count;
+        map<int, vector<int>> number_positions;
+        
+        for (int i = 0; i < _cards.size(); i++){
+            int card_num = _cards[i]->get_card_num();
+            number_count[card_num]++;
+            number_positions[card_num].push_back(i);
+        }
+        
+        for (auto& pair : number_count){
+            if(pair.second >= 3){
+                card_values_sum += get_card_value(pair.first) * 3;
+                for(int index : number_positions[pair.first]){
+                    _cards[index]->set_card_which_is_used();
+                }
+            }
+        }            
     }
     else {
         for(auto card : _cards){
             card_values_sum += get_card_value(card->get_card_num());
+        }
+        for(int i = 0;i < 5;i++){
+            _cards[i]->set_card_which_is_used();
         }
     }
     
@@ -882,7 +1117,7 @@ int score_board::get__multiplier(vector<card*> _cards){
     }*/
 
     bool is_straight = false;
-    if (_cards.at(0) -> get_card_num() == _cards.at(1) -> get_card_num() + 1 && 
+    if (card_count == 5 && _cards.at(0) -> get_card_num() == _cards.at(1) -> get_card_num() + 1 && 
         _cards.at(1) -> get_card_num() == _cards.at(2) -> get_card_num() + 1 && 
         _cards.at(2) -> get_card_num() == _cards.at(3) -> get_card_num() + 1 && 
         _cards.at(3) -> get_card_num() == _cards.at(4) -> get_card_num() + 1)
@@ -891,7 +1126,7 @@ int score_board::get__multiplier(vector<card*> _cards){
         }
     
     // 10JQKA
-    if (_cards.at(0) -> get_card_num() == 1 && _cards.at(1) -> get_card_num() == 13 &&
+    if (card_count == 5 && _cards.at(0) -> get_card_num() == 1 && _cards.at(1) -> get_card_num() == 13 &&
         _cards.at(2) -> get_card_num() == 12 && _cards.at(3) -> get_card_num() == 11 && _cards.at(4) -> get_card_num() == 10)
         {
             is_straight = true;
@@ -933,6 +1168,7 @@ int score_board::get__multiplier(vector<card*> _cards){
     else{
         hand_type = "High Card";
     }
+
     
     map<string, int> multipliers = {
         {"Straight Flush", 9},
@@ -947,6 +1183,136 @@ int score_board::get__multiplier(vector<card*> _cards){
     };
 
     return multipliers[hand_type];
+}
+
+string score_board::get_type(vector<card*> _cards){
+    int card_count = _cards.size();
+    if (card_count == 0) return 0;
+
+    map<int, int> number_count;
+    map<int, int> suit_count;
+    
+    for (auto card : _cards){
+        number_count[card->get_card_num()]++;
+        suit_count[card->get_card_suit()]++;
+    }
+
+    // straight_flush
+    bool is_flush = false;
+    if (card_count >= 5){
+        for (auto& pair : suit_count){
+            if (pair.second >= 5){
+                is_flush = true;
+                break;
+            }
+        }
+    }
+
+    // four_of_a_kind
+    /*bool is_straight = false;
+    if (card_count >= 5){
+        vector<int> numbers;
+        for (auto& pair : number_count){
+            numbers.push_back(pair.first);
+        }
+        sort(numbers.begin(), numbers.end());
+        
+        for (int i = 0; i + 5 <= numbers.size(); i++){
+            bool consecutive = true;
+            for (int j = 0; j < 4; j++){
+                if (numbers[i+j+1] != numbers[i+j] + 1){
+                    consecutive = false;
+                    break;
+                }
+            }
+            if (consecutive){
+                is_straight = true;
+                break;
+            }
+        }
+        
+        // A2345
+        if (!is_straight && numbers.size() >= 5){
+            bool has_ace = (number_count.find(1) != number_count.end());
+            bool has_2 = (number_count.find(2) != number_count.end());
+            bool has_3 = (number_count.find(3) != number_count.end());
+            bool has_4 = (number_count.find(4) != number_count.end());
+            bool has_5 = (number_count.find(5) != number_count.end());
+            
+            if (has_ace && has_2 && has_3 && has_4 && has_5){
+                is_straight = true;
+            }
+        }
+
+        // 10JQKA
+        if (!is_straight && numbers.size() >= 5){
+            bool has_ace = (number_count.find(1) != number_count.end());
+            bool has_K = (number_count.find(13) != number_count.end());
+            bool has_Q = (number_count.find(12) != number_count.end());
+            bool has_J = (number_count.find(11) != number_count.end());
+            bool has_10 = (number_count.find(10) != number_count.end());
+            
+            if (has_ace && has_K && has_Q && has_J && has_10){
+                is_straight = true;
+            }
+        }
+    }*/
+
+    bool is_straight = false;
+    if (card_count == 5 && _cards.at(0) -> get_card_num() == _cards.at(1) -> get_card_num() + 1 && 
+        _cards.at(1) -> get_card_num() == _cards.at(2) -> get_card_num() + 1 && 
+        _cards.at(2) -> get_card_num() == _cards.at(3) -> get_card_num() + 1 && 
+        _cards.at(3) -> get_card_num() == _cards.at(4) -> get_card_num() + 1)
+        {
+            is_straight = true;
+        }
+    
+    // 10JQKA
+    if (card_count == 5 && _cards.at(0) -> get_card_num() == 1 && _cards.at(1) -> get_card_num() == 13 &&
+        _cards.at(2) -> get_card_num() == 12 && _cards.at(3) -> get_card_num() == 11 && _cards.at(4) -> get_card_num() == 10)
+        {
+            is_straight = true;
+        }
+
+    // 
+    vector<int> counts;
+    for(auto& pair : number_count){
+        counts.push_back(pair.second);
+    }
+    sort(counts.rbegin(), counts.rend());
+    
+    string hand_type = "";
+    
+    if(is_flush && is_straight){
+        hand_type = "Straight Flush";
+    }
+    else if(counts[0] >= 4){
+        hand_type = "Four of a Kind";
+    } 
+    else if(counts[0] >= 3 && counts[1] >= 2){
+        hand_type = "Full House";
+    }
+    else if(is_flush){
+        hand_type = "Flush";
+    }
+    else if(is_straight){
+        hand_type = "Straight";
+    }
+    else if(counts[0] >= 3){
+        hand_type = "Three of a Kind";
+    }
+    else if(counts[0] >= 2 && counts[1] >= 2){
+        hand_type = "Two Pair";
+    }
+    else if(counts[0] >= 2){
+        hand_type = "Pair";
+    }
+    else{
+        hand_type = "High Card";
+    }
+
+    
+    return hand_type;
 }
 
 int score_board::get_cur_score(){

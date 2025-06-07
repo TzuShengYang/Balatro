@@ -101,6 +101,10 @@ bool card::card_is_chosen(){
     return is_chosen;
 }
 
+bool card::card_is_used(){
+    return is_in_set;
+}
+
 //card
 //-----------------------------------------------------------
 

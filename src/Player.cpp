@@ -67,7 +67,7 @@ bool Player::buy(int amount){
 }
 
 bool Player::to_level_up(){
-    if (user_experience >= user_level * user_level * 20){
+    if (user_experience >= user_level * user_level * 300){
         return true;
     } else {
         return false;
@@ -90,7 +90,7 @@ void Inventory::add_item(){
 }
 
 void Inventory::use_item(){
-
+    
 }
 
 //Inventory

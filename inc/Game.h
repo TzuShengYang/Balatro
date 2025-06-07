@@ -34,9 +34,11 @@ public:
 
     int get_times(string type_name);
     int get_score();
+    string get_type(vector<card*> _cards);
     int get_cur_score();
 
     int get__multiplier(vector<card*> _cards);
+    void init();
 
 };
 
@@ -55,7 +57,9 @@ private:
     int selected_card_number;
     int round;
     int play_hand;
+    int play_hand_number;
     int discard_card;
+    int discard_card_number;
     int score;
     int prev_score;
     int sort_status;
@@ -88,7 +92,7 @@ private:
     void show_table_in_calculating();
     void show_hand_and_button();
     void show_hand_and_button_in_calculating();
-    void show_button();
+    void show_result();
     void show_shop();
     void show_score_board();
     void show_sort_approach();
@@ -100,8 +104,8 @@ private:
     char input_manage();
 
     void small_blind();
-    void mid_blind();
     void big_blind();
+    void the_manacle();
 
 public:
     Game();

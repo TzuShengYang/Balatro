@@ -3,6 +3,7 @@
 
 #include "Item.h"
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -42,8 +43,7 @@ public:
 class Inventory{
 private:
     unsigned int amount;
-    string inventory_name;
-    Inventory *myInventory;
+    vector<good*> my_items;
 
 public:
     Inventory();

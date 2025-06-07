@@ -120,6 +120,7 @@ Item *start_menu::get_item(int index){
 
 void start_menu::item_display(int item_width, int item_height){
     for (int i = 0;i < item_height;i++){
+        cout << "                            ";
         if (i == 0 || i == item_height - 1){
             for (int j = 0;j < item_number;j++){
                 if (j){
@@ -268,16 +269,16 @@ void sign_up::run_UI(){
 void sign_up::block_display(string title, string content, bool blod){
     if (blod){
         cout << "\n";
-        cout << "                 #================================#\n";
-        cout << setw(15) << right << title << ": ║" << setw(32) << left << content << "║\n";
-        cout << "                 #================================#\n";
+        cout << "                                    #================================#\n";
+        cout << setw(34) << right << title << ": ║" << setw(32) << left << content << "║\n";
+        cout << "                                    #================================#\n";
         cout << "\n";
     } else {
         cout << "\n";
-        cout << "                 .--------------------------------.\n";
-        cout << setw(15) << right << title << ": ║" << setw(32) << left << content << "║\n";
-        cout << "                 '--------------------------------'\n";
-        cout << "\n";
+        cout << "                                    .--------------------------------.\n";
+        cout << setw(34) << right << title << ": ║" << setw(32) << left << content << "║\n";
+        cout << "                                    '--------------------------------'\n";
+        cout << "\n";  
     }
 
 }
@@ -389,15 +390,15 @@ void sign_in::run_UI(){
 void sign_in::block_display(string title, string content, bool blod){
     if (blod){
         cout << "\n";
-        cout << "                 #================================#\n";
-        cout << setw(15) << right << title << ": ║" << setw(32) << left << content << "║\n";
-        cout << "                 #================================#\n";
+        cout << "                                    #================================#\n";
+        cout << setw(34) << right << title << ": ║" << setw(32) << left << content << "║\n";
+        cout << "                                    #================================#\n";
         cout << "\n";
     } else {
         cout << "\n";
-        cout << "                 .--------------------------------.\n";
-        cout << setw(15) << right << title << ": ║" << setw(32) << left << content << "║\n";
-        cout << "                 '--------------------------------'\n";
+        cout << "                                    .--------------------------------.\n";
+        cout << setw(34) << right << title << ": ║" << setw(32) << left << content << "║\n";
+        cout << "                                    '--------------------------------'\n";
         cout << "\n";
     }
 
@@ -474,6 +475,7 @@ Item *main_menu::get_item(int index){
 
 void main_menu::item_display(int item_width, int item_height){
     for (int i = 0;i < item_height;i++){
+        cout << "               ";
         if (i == 0 || i == item_height - 1){
             for (int j = 0;j < item_number;j++){
                 if (j){
@@ -534,16 +536,16 @@ int rule::show_rule(){
     cout << "║                                                  ║\n";
     cout << "║                                                  ║\n";
     cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
-    cout << "║           A ┃ < ┃   page 1/4   ┃ > ┃ D           ║\n";
+    cout << "║           A ┃ < ┃   page 1/6   ┃ > ┃ D           ║\n";
     cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
     cout << "║                                                  ║\n";
     cout << "╚══════════════════════════════════════════════════╝\n";
     while (cin >> choice){
-        if ((choice == 'D' || choice == 'd') && page != 3){
+        if ((choice == 'D' || choice == 'd') && page != 5){
             page += 1;
         } else if ((choice == 'A' || choice == 'a') && page != 0) {
             page -= 1;
-        } else if (choice == '=' && page == 3) {
+        } else if (choice == '=' && page == 5) {
             break;
         }
 
@@ -558,7 +560,7 @@ int rule::show_rule(){
                 cout << "║                                                  ║\n";
                 cout << "║                                                  ║\n";
                 cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
-                cout << "║           A ┃ < ┃   page 1/4   ┃ > ┃ D           ║\n";
+                cout << "║           A ┃ < ┃   page 1/6   ┃ > ┃ D           ║\n";
                 cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
                 cout << "║                                                  ║\n";
                 cout << "╚══════════════════════════════════════════════════╝\n";
@@ -567,13 +569,13 @@ int rule::show_rule(){
                 system ("clear");
                 cout << "╔══════════════════════════════════════════════════╗\n";
                 cout << "║                                                  ║\n";
-                cout << "║          There are 4 rounds in one game          ║\n";
-                cout << "║        Each round has 3 times to play card       ║\n";
-                cout << "║  You can discard 1~5 cards 3 times in each round ║\n";
+                cout << "║           There is 1 round in one game           ║\n";
+                cout << "║              Each round has 3 blinds             ║\n";
+                cout << "║       SMALL BLIND, BIG BLIND, MANACLE BLIND      ║\n";
                 cout << "║                                                  ║\n";
                 cout << "║                                                  ║\n";
                 cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
-                cout << "║           A ┃ < ┃   page 2/4   ┃ > ┃ D           ║\n";
+                cout << "║           A ┃ < ┃   page 2/6   ┃ > ┃ D           ║\n";
                 cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
                 cout << "║                                                  ║\n";
                 cout << "╚══════════════════════════════════════════════════╝\n";
@@ -582,13 +584,13 @@ int rule::show_rule(){
                 system ("clear");
                 cout << "╔══════════════════════════════════════════════════╗\n";
                 cout << "║                                                  ║\n";
-                cout << "║                                                  ║\n";
-                cout << "║    The score you gain will convert to currency   ║\n";
-                cout << "║     You can use currency to buy skill cards      ║\n";
+                cout << "║              In SMALL and BIG Blind,             ║\n";
+                cout << "║          player can choose PLAY or SKIP          ║\n";
+                cout << "║   But in MANACLE BLIND, player must choose PLAY  ║\n";
                 cout << "║                                                  ║\n";
                 cout << "║                                                  ║\n";
                 cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
-                cout << "║           A ┃ < ┃   page 3/4   ┃ > ┃ D           ║\n";
+                cout << "║           A ┃ < ┃   page 3/6   ┃ > ┃ D           ║\n";
                 cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
                 cout << "║                                                  ║\n";
                 cout << "╚══════════════════════════════════════════════════╝\n";
@@ -598,12 +600,42 @@ int rule::show_rule(){
                 cout << "╔══════════════════════════════════════════════════╗\n";
                 cout << "║                                                  ║\n";
                 cout << "║                                                  ║\n";
+                cout << "║   In each blind, player must play hand 4 times   ║\n";
+                cout << "║   Player also has 4 times to discard 1~5 cards   ║\n";
+                cout << "║                                                  ║\n";
+                cout << "║                                                  ║\n";
+                cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
+                cout << "║           A ┃ < ┃   page 4/6   ┃ > ┃ D           ║\n";
+                cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
+                cout << "║                                                  ║\n";
+                cout << "╚══════════════════════════════════════════════════╝\n";
+                break;
+            case 4:
+                system ("clear");
+                cout << "╔══════════════════════════════════════════════════╗\n";
+                cout << "║                                                  ║\n";
+                cout << "║                                                  ║\n";
+                cout << "║           After 3 blinds in one round,           ║\n";
+                cout << "║             navigate to award stage              ║\n";
+                cout << "║                                                  ║\n";
+                cout << "║                                                  ║\n";
+                cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
+                cout << "║           A ┃ < ┃   page 5/6   ┃ > ┃ D           ║\n";
+                cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
+                cout << "║                                                  ║\n";
+                cout << "╚══════════════════════════════════════════════════╝\n";
+                break;
+            case 5:
+                system ("clear");
+                cout << "╔══════════════════════════════════════════════════╗\n";
+                cout << "║                                                  ║\n";
+                cout << "║                                                  ║\n";
                 cout << "║            Now try your best to become           ║\n";
                 cout << "║               the top 1 player !!!               ║\n";
                 cout << "║                                                  ║\n";
                 cout << "║                                                  ║\n";
                 cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
-                cout << "║           A ┃ < ┃   page 4/4   ┃ > ┃ D           ║\n";
+                cout << "║           A ┃ < ┃   page 6/6   ┃ > ┃ D           ║\n";
                 cout << "║              ━━━━━━━━━━━━━━━━━━━━━━              ║\n";
                 cout << "║              Enter '=' to start ...              ║\n";
                 cout << "╚══════════════════════════════════════════════════╝\n";

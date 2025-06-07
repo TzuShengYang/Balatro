@@ -64,6 +64,7 @@ void GameManager::implement_game(){
 
             case PLAY:
                 status = balatro -> run_game(current_user);
+                break;
                 
             default:
                 return;
