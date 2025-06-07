@@ -18,6 +18,7 @@ GameManager::GameManager(){
     sign_in_UI = new sign_in;
     main_menu_UI = new main_menu;
     rule_UI = new rule;
+    leading_board_UI = new leading_board;
 }
 
 void GameManager::init(){
@@ -56,6 +57,10 @@ void GameManager::implement_game(){
                 status = rule_UI -> show_rule();
                 break;
 
+            case LEADINGBOARD:
+                status = leading_board_UI -> show_leading_board();
+                break;
+                
             default:
                 return;
         }

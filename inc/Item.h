@@ -28,8 +28,21 @@ public:
     void switch_item_status();
 };
 
-class goods: public Item{
-    bool is_sold;
+class good: public Item{
+private:
+    string goods_name;
+    unsigned int price;
+    unsigned int amount;
+
+public:
+    good();
+
+    void set_goods(string _goods_name, unsigned int _price, unsigned int _amount);
+    bool is_sold();
+
+    unsigned int get_goods_amount();
+    unsigned int get_goods_price();
+    string get_goods_name();
 };
 
 class card: public Item{

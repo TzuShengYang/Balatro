@@ -8,11 +8,18 @@
 using namespace std;
 
 class Game{
+private:
+    vector<card*> full_deck;
+    vector<card*> deck;
+    vector<card*> table;
+    vector<good*> goods;
+
 public:
     Game();
 
-private:
-    vector<card*> deck;
+    void set_deck();
+    void discard_card();
+    void set_goods(string _goods_name, int _amount);
 
 };
 

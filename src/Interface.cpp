@@ -633,10 +633,11 @@ int rule::show_rule(){
     
 //rule
 //----------------------------------------------------------
-/*
+
 leading_board::leading_board(): Interface(){
     page = 0;
     userdata = load_user();
+    key = "highest";
 }
 
 int leading_board::show_leading_board(){
@@ -645,15 +646,140 @@ int leading_board::show_leading_board(){
 }
 
 void leading_board::run_UI(){
-    char input;
+    char input = 'i';
     do {
         system("clear");
         bar_display();
         sort_leading_board();
         rank_table_display();
-        input_manage();
-
+        input = input_manage();
     } while (input != '=');
+}
+
+char leading_board::input_manage(){
+    char input;
+    cin >> input;
+    if ((input == 'd' || input == 'D') && page < 2){
+        page++;
+    } else if ((input == 'a' || input == 'A') && page > 0){
+        page--;
+    }
+
+    switch (page){
+        case 0: 
+            key = "highest";
+            break;
+
+        case 1:
+            key = "experience";
+            break;
+
+        case 2:
+            key = "level";
+            break;
+
+        default:
+            break;
+    }
+
+    return input;
+}
+
+void leading_board::rank_table_display(){
+    int linenum = min(15, (int)sorted_rank.size());
+
+    for (int i = 1;i <= linenum;i++){
+        const auto &[name, val] = sorted_rank[i - 1];
+        cout << "          |";
+        cout << setw(5) << left << i;
+        cout << setfill('-') << "    " << setw(36) << left << name;
+        cout << setfill(' ') << setw(5) << right << val << "|\n";
+    }
+}
+
+void leading_board::sort_leading_board(){
+
+    sorted_rank.clear();
+
+    for (const auto &[name, info]: userdata.items()){
+        sorted_rank.emplace_back(name, info[key]);
+    }
+
+    sort(sorted_rank.begin(), sorted_rank.end(), 
+        [](const pair<string, int> &a, const pair<string, int> &b){
+            return a.second > b.second;
+        }
+    );
+}
+
+void leading_board::bar_display(){
+    cout << "          ";
+
+    if (page == 0){
+        cout << "#";
+        for (int i = 0;i < 16;i++) cout << "=";
+    } else {
+        cout << ".";
+        for (int i = 0;i < 16;i++) cout << "-";
+    }
+
+    if (page == 0 || page == 1){
+        cout << "#";
+    } else {
+        cout << ".";
+    }
+
+    if (page == 1) for (int i = 0;i < 16;i++) cout << "=";
+    else for (int i = 0;i < 16;i++) cout << "-";
+
+    if (page == 1 || page == 2){
+        cout << "#";
+    } else {
+        cout << ".";
+    }
+
+    if (page == 2) for (int i = 0;i < 16;i++) cout << "=";
+    else for (int i = 0;i < 16;i++) cout << "-";
+
+    if (page == 2){
+        cout << "#\n";
+    } else {
+        cout << ".\n";
+    }
+
+    cout << "          ";
+
+    if (page == 0){
+        cout << "║";
+    } else {
+        cout << "|";
+    }
+
+    cout << "  HIGHEST SCORD ";
+
+    if (page == 0 || page == 1){
+        cout << "║";
+    } else {
+        cout << "|";
+    }
+
+    cout << "   EXPERIENCE   ";
+
+    if (page == 1 || page == 2){
+        cout << "║";
+    } else {
+        cout << "|";
+    }
+
+    cout << "      LEVEL     ";
+
+    if (page == 2){
+        cout << "║\n";
+    } else {
+        cout << "|\n";
+    }
+
+    cout << "          :----------------'----------------'----------------:\n";
 }
 
 json leading_board::load_user(){
@@ -664,6 +790,6 @@ json leading_board::load_user(){
     infile.close();
     return users;
 }
-*/
+
 //leading board
 //----------------------------------------------------------

@@ -10,6 +10,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <iomanip>
+#include <algorithm>
 
 using json = nlohmann::json;
 using namespace std;
@@ -114,25 +115,26 @@ public:
 };
 
 //----------------------------------------------
-/*
+
 class leading_board: public Interface{
 private:
     int page;
     json userdata;
     string key;
+    vector<pair<string, int>> sorted_rank;
 
     void run_UI();
     void bar_display();
     void rank_table_display();
     void sort_leading_board();
     json load_user();
-    void input_manage();
+    char input_manage();
 public:
     leading_board();
     int show_leading_board();
 };
 
-*/
+
 
 
 
