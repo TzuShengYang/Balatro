@@ -30,17 +30,15 @@ public:
 
 class good: public Item{
 private:
-    string goods_name;
     unsigned int price;
     unsigned int amount;
 
 public:
     good();
 
-    void set_goods(string _goods_name, unsigned int _price, unsigned int _amount);
+    void set_goods(string _goods_name, unsigned int _price);
     bool is_sold();
 
-    unsigned int get_goods_amount();
     unsigned int get_goods_price();
     string get_goods_name();
 };
@@ -55,6 +53,7 @@ private:
     };
     int suit;
     int number;
+    bool is_chosen;
 
 public:
     card();
@@ -63,6 +62,7 @@ public:
 
     unsigned int get_card_suit();
     unsigned int get_card_num();
+    bool card_is_chosen();
 
 };
 
