@@ -16,6 +16,9 @@ GameManager::GameManager(){
     start_menu_UI = new start_menu;
     sign_up_UI = new sign_up;
     sign_in_UI = new sign_in;
+    main_menu_UI = new main_menu;
+    rule_UI = new rule;
+    leading_board_UI = new leading_board;
 }
 
 void GameManager::init(){
@@ -25,6 +28,8 @@ void GameManager::init(){
 
 void GameManager::implement_game(){
     init();
+
+    //rule_UI -> show_rule();
 
     while (status != QUIT){
         switch (status) {
@@ -37,13 +42,25 @@ void GameManager::implement_game(){
                 break;
 
             case SIGN_UP:
-                status = sign_up_UI -> run_sign_up();
+                status = sign_up_UI -> run_sign_up(current_user);
                 break;
 
             case SIGN_IN:
-                status = sign_in_UI -> run_sign_in();
+                status = sign_in_UI -> run_sign_in(current_user);
                 break;
 
+            case MAIN_MENU:
+                status = main_menu_UI -> run_main_menu(current_user);
+                break;
+
+            case RULE:
+                status = rule_UI -> show_rule();
+                break;
+
+            case LEADINGBOARD:
+                status = leading_board_UI -> show_leading_board();
+                break;
+                
             default:
                 return;
         }

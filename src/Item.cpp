@@ -42,8 +42,55 @@ void Item::switch_item_status(){
     is_selected ^= true;
 }
 
-
 //Item
+//-----------------------------------------------------------
+
+good::good(){
+    amount = 2;
+}
+
+void good::set_goods(string _goods_name, unsigned int _price, unsigned int _amount){
+    goods_name = _goods_name;
+    price = _price;
+    amount = _amount;
+}
+
+bool good::is_sold(){
+    if (amount <= 0) return true;
+    else return false;
+}
+
+unsigned int good::get_goods_amount(){
+    return amount;
+}
+
+unsigned int good::get_goods_price(){
+    return price;
+}
+
+string good::get_goods_name(){
+    return goods_name;
+}
+
+//goods
+//-----------------------------------------------------------
+
+card::card(){}
+
+void card::set_card(int _suit, int _number){
+    suit = _suit;
+    number = _number;
+}
+
+unsigned int card::get_card_suit(){
+    return suit;
+}
+
+unsigned int card::get_card_num(){
+    return number;
+} 
+
+//card
 //-----------------------------------------------------------
 
 

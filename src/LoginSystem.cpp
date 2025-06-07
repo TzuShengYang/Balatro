@@ -30,7 +30,10 @@ json login_system::load_user(){
 void login_system::add_user(){
     json_user[account] = {
         {"password", password},
-        {"currency", 0}
+        {"currency", 0},
+        {"experience", 0},
+        {"highest", 0},
+        {"level", 1}
     };
 }
 
@@ -60,4 +63,24 @@ void login_system::set_account(string _account){
 
 void login_system::set_password(string _password){
     password = _password;
+}
+
+string login_system::get_username(){
+    return account;
+}
+
+unsigned int login_system::get_user_level(){
+    return json_user[account]["level"];
+}
+
+unsigned int login_system::get_user_currency(){
+    return json_user[account]["currency"];
+}
+
+unsigned int login_system::get_user_experience(){
+    return json_user[account]["experience"];
+}
+
+unsigned int login_system::get_user_highest(){
+    return json_user[account]["highest"];
 }

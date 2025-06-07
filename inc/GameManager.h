@@ -21,6 +21,9 @@ private:
     start_menu *start_menu_UI;
     sign_up *sign_up_UI;
     sign_in *sign_in_UI;
+    main_menu *main_menu_UI;
+    rule *rule_UI;
+    leading_board *leading_board_UI;
     
     int status;
     void init();

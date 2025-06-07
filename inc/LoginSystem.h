@@ -17,11 +17,15 @@ private:
     
     string account;
     string password;
+    unsigned int currency;
+    unsigned int experience;
+    unsigned int level;
+    unsigned int highest;
     
     void load_file();
     json load_user();
     void add_user();
-   
+    
 public:
     login_system();
 
@@ -30,6 +34,12 @@ public:
     void save_user();
     void set_account(string _account);
     void set_password(string _password);
+
+    string          get_username();
+    unsigned int    get_user_level();
+    unsigned int    get_user_experience();
+    unsigned int    get_user_currency();
+    unsigned int    get_user_highest();
 
     void sign_up();
     void sign_in();
