@@ -77,3 +77,21 @@ bool Player::to_level_up(){
 bool Player::able_to_buy(int amount){
     return user_currency >= amount;
 }
+
+//Player
+//------------------------------------------------------------
+
+Inventory::Inventory(){
+    amount = 0;
+}
+
+void Inventory::add_item(){
+
+}
+
+void Inventory::use_item(){
+
+}
+
+//Inventory
+//------------------------------------------------------------

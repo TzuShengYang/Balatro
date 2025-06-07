@@ -70,12 +70,19 @@ string good::get_goods_name(){
 //goods
 //-----------------------------------------------------------
 
-card::card(){}
+card::card(){
+    is_chosen = false;
+    is_in_set = false;
+}
 
 void card::set_card(int _suit, int _number){
     suit = _suit;
     number = _number;
     is_chosen = false;
+}
+
+void card::switch_card_status(){
+    is_chosen ^= true;
 }
 
 unsigned int card::get_card_suit(){
@@ -85,6 +92,10 @@ unsigned int card::get_card_suit(){
 unsigned int card::get_card_num(){
     return number;
 } 
+
+void card::set_card_which_is_used(){
+    is_in_set ^= true;
+}
 
 bool card::card_is_chosen(){
     return is_chosen;

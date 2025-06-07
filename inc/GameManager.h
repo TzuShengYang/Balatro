@@ -6,6 +6,7 @@
 #include "Interface.h"
 #include "Player.h"
 #include "Item.h"
+#include "Game.h"
 
 class Player;
 
@@ -24,6 +25,8 @@ private:
     main_menu *main_menu_UI;
     rule *rule_UI;
     leading_board *leading_board_UI;
+    Game *balatro;
+    
     
     int status;
     void init();

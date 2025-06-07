@@ -1,6 +1,7 @@
 #ifndef _PLAYER_H_
 #define _PLAYER_H_
 
+#include "Item.h"
 #include <string>
 
 using namespace std;
@@ -37,4 +38,19 @@ public:
     bool buy(int amount);
 
 };
+
+class Inventory{
+private:
+    unsigned int amount;
+    string inventory_name;
+    Inventory *myInventory;
+
+public:
+    Inventory();
+
+    void add_item();
+    void use_item();
+
+};
+
 #endif

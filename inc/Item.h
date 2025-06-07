@@ -54,6 +54,7 @@ private:
     int suit;
     int number;
     bool is_chosen;
+    bool is_in_set;
 
 public:
     card();
@@ -63,6 +64,9 @@ public:
     unsigned int get_card_suit();
     unsigned int get_card_num();
     bool card_is_chosen();
+    bool card_is_used();
+    void set_card_which_is_used();
+    void switch_card_status();
 
 };
 
