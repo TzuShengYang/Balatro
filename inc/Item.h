@@ -2,6 +2,7 @@
 #define _ITEM_H_
 
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -30,17 +31,15 @@ public:
 
 class good: public Item{
 private:
-    string goods_name;
     unsigned int price;
     unsigned int amount;
 
 public:
     good();
 
-    void set_goods(string _goods_name, unsigned int _price, unsigned int _amount);
+    void set_goods(string _goods_name, unsigned int _price);
     bool is_sold();
 
-    unsigned int get_goods_amount();
     unsigned int get_goods_price();
     string get_goods_name();
 };
@@ -55,6 +54,8 @@ private:
     };
     int suit;
     int number;
+    bool is_chosen;
+    bool is_in_set;
 
 public:
     card();
@@ -63,6 +64,10 @@ public:
 
     unsigned int get_card_suit();
     unsigned int get_card_num();
+    bool card_is_chosen();
+    bool card_is_used();
+    void set_card_which_is_used();
+    void switch_card_status();
 
 };
 

@@ -9,6 +9,7 @@ login_system::login_system(){
 }
 
 void login_system::load_file(){
+    json_user = load_user();
     ifstream infile(filename);
     if (!infile.good()){
         ofstream outfile(filename);
@@ -28,17 +29,37 @@ json login_system::load_user(){
 }
 
 void login_system::add_user(){
+    json_user = load_user();
     json_user[account] = {
         {"password", password},
         {"currency", 0},
         {"experience", 0},
         {"highest", 0},
-        {"level", 1}
+        {"level", 1},
+        {"rate", 0.0}
     };
+}
+
+
+
+void login_system::save_data(Player *_cur_player){
+    json_user = load_user();
+    json_user[_cur_player -> get_username()]["currency"] = _cur_player -> get_user_currency();
+    json_user[_cur_player -> get_username()]["experience"] = _cur_player -> get_user_experience();
+    json_user[_cur_player -> get_username()]["highest"] = _cur_player -> get_user_highest();
+    json_user[_cur_player -> get_username()]["level"] = _cur_player -> get_user_level();
+    json_user[_cur_player -> get_username()]["rate"] = _cur_player -> get_user_rate();
+    json_user[_cur_player -> get_username()]["password"] = _cur_player -> get_password();
 }
 
 void login_system::save_user(){
     add_user();
+    ofstream outfile(filename);
+    outfile << json_user.dump(4);
+    outfile.close();
+}
+
+void login_system::log_out(){
     ofstream outfile(filename);
     outfile << json_user.dump(4);
     outfile.close();
@@ -84,3 +105,13 @@ unsigned int login_system::get_user_experience(){
 unsigned int login_system::get_user_highest(){
     return json_user[account]["highest"];
 }
+
+double login_system::get_user_rate(){
+    return json_user[account]["rate"];
+}
+
+string login_system::get_password(){
+    return json_user[account]["password"];
+}
+
+

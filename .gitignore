@@ -1,3 +1,4 @@
 *.json
 *.o
 test
+.DS_Store

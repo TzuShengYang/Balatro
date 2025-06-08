@@ -8,6 +8,10 @@ void Player::set_username(string _username){
     username = _username;
 }
 
+void Player::set_password(string _password){
+    password = _password;
+}
+
 void Player::set_user_currency(unsigned int _user_currency){
     user_currency = _user_currency;
 }
@@ -24,8 +28,16 @@ void Player::set_user_highest(unsigned int _highest){
     highest = _highest;
 }
 
+void Player::set_user_rate(double _rate){
+    rate = _rate;
+}
+
 string Player::get_username(){
     return username;
+}
+
+string Player::get_password(){
+    return password;
 }
 
 unsigned int Player::get_user_level(){
@@ -42,6 +54,10 @@ unsigned int Player::get_user_experience(){
 
 unsigned int Player::get_user_highest(){
     return highest;
+}
+
+double Player::get_user_rate(){
+    return rate;
 }
 
 void Player::level_up(){
@@ -67,7 +83,7 @@ bool Player::buy(int amount){
 }
 
 bool Player::to_level_up(){
-    if (user_experience >= user_level * user_level * 20){
+    if (user_experience >= user_level * user_level * 300){
         return true;
     } else {
         return false;
@@ -77,3 +93,21 @@ bool Player::to_level_up(){
 bool Player::able_to_buy(int amount){
     return user_currency >= amount;
 }
+
+//Player
+//------------------------------------------------------------
+
+Inventory::Inventory(){
+    amount = 0;
+}
+
+void Inventory::add_item(){
+
+}
+
+void Inventory::use_item(){
+    
+}
+
+//Inventory
+//------------------------------------------------------------

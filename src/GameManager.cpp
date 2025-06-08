@@ -2,7 +2,6 @@
 #include "../inc/Interface.h"
 #include "../inc/Player.h"
 #include "../inc/InterfaceNo.h"
-#include "../inc/InterfaceNo.h"
 
 using namespace std;
 
@@ -19,6 +18,8 @@ GameManager::GameManager(){
     main_menu_UI = new main_menu;
     rule_UI = new rule;
     leading_board_UI = new leading_board;
+    balatro = new Game;
+
 }
 
 void GameManager::init(){
@@ -59,6 +60,10 @@ void GameManager::implement_game(){
 
             case LEADINGBOARD:
                 status = leading_board_UI -> show_leading_board();
+                break;
+
+            case PLAY:
+                status = balatro -> run_game(current_user);
                 break;
                 
             default:
