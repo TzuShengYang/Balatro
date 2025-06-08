@@ -190,7 +190,7 @@ void Game::set_goods(){
                 break;
 
             case 6:
-                temp -> set_goods("discard + 1", 100, 0);
+                temp -> set_goods("discard + 1", 100, 1);
                 break;
                 
             default:
@@ -596,7 +596,7 @@ void Game::show_result(){
     current_player -> gain_exp((((my_score_board -> get_score() - 1) / 100) * 100) + 100);
     current_player -> gain_currency(((my_score_board -> get_score() - 1) / 20));
     current_player -> set_user_highest(max((int)current_player -> get_user_highest(), my_score_board -> get_score()));
-    current_player -> set_user_rate((my_score_board -> get_score()) / (play_hand_number + discard_card_number));
+    current_player -> set_user_rate(max((my_score_board -> get_score()) / (play_hand_number + discard_card_number), (int)current_player -> get_user_rate()));
 
     log_out_sys -> save_data(current_player);
     log_out_sys -> log_out();
@@ -639,7 +639,7 @@ void Game::show_shop(){
 
             if ((input == 'w' || input == 'W') && cur_idx > 0){
                 cur_idx--;
-            } else if ((input == 's' || input == 'S') && cur_idx < 6){
+            } else if ((input == 's' || input == 'S') && cur_idx < 7){
                 cur_idx++;
             }
 
@@ -648,7 +648,7 @@ void Game::show_shop(){
         if (cur_idx >= 7){
             return;
         } else if (buy_item_num >= 2){
-            cout << "You have bought too many item. By your skill bro.";
+            cout << "                      You have bought too many item. By your skill bro.";
             cin >> input;
             input = 'i';
         } else if (!good_in_shop_can_buy(cur_idx)){
@@ -687,7 +687,7 @@ void Game::show_inventory(){
 
             if ((input == 'w' || input == 'W') && cur_idx > 0){
                 cur_idx--;
-            } else if ((input == 's' || input == 'S') && cur_idx < 6){
+            } else if ((input == 's' || input == 'S') && cur_idx < 7){
                 cur_idx++;
             }
         } while (input != '=');
@@ -708,12 +708,13 @@ void Game::show_inventory(){
 void Game::show_goods(int selected_idx){
     for (int i = 0;i < 7;i++){
         if (good_in_shop_can_buy(i)) cout << "\033[36m";
-        if (i == 0 || i == 6) cout << "                    " << setw(40) << left << goods.at(i) -> get_goods_name() << setw(10) << goods.at(i) -> get_goods_amount() << setw(3) << goods.at(i) -> get_goods_price() << "$   ";
+        if (i == 0 || i == 5 || i == 6) cout << "                    " << setw(40) << left << goods.at(i) -> get_goods_name() << setw(10) << goods.at(i) -> get_goods_amount() << setw(3) << goods.at(i) -> get_goods_price() << "$   ";
         else  cout << "                    " << setw(42) << left << goods.at(i) -> get_goods_name() << setw(10) << goods.at(i) -> get_goods_amount() << setw(3) << goods.at(i) -> get_goods_price() << "$   ";
-
         if (i == selected_idx) cout << "<-";
-        cout << "\n\033[0m\n";
+        cout << "\n";
     }
+
+    cout << "\n\033[0m\n";
 
     if (selected_idx >= 7){
         cout << "                                           KEEP PLAYING                      <-\n";
@@ -725,12 +726,14 @@ void Game::show_goods(int selected_idx){
 void Game::show_inv_goods(int selected_idx){
     for (int i = 0;i < 7;i++){
         if (good_in_inv_can_use(i)) cout << "\033[36m";
-        if (i == 0 || i == 6) cout << "                    " << setw(40) << left << inventory.at(i) -> get_goods_name() << setw(10) << inventory.at(i) -> get_goods_amount() << "   " << "$   ";
+        if (i == 0 || i == 5 || i == 6) cout << "                    " << setw(40) << left << inventory.at(i) -> get_goods_name() << setw(10) << inventory.at(i) -> get_goods_amount() << "   " << "    ";
         else  cout << "                    " << setw(42) << left << inventory.at(i) -> get_goods_name() << setw(10) << inventory.at(i) -> get_goods_amount() << "   " << "    ";
-
+            cout << "\033[0m";
         if (i == selected_idx) cout << "<-";
-        cout << "\n\033[0m\n";
+        cout << "\n";
     }
+    cout << "\n";
+
 
     if (selected_idx >= 7){
         cout << "                                           KEEP PLAYING                      <-\n";
@@ -782,7 +785,6 @@ void Game::run_game_UI(){
     clear_hand();
     shuffle_full_deck();
     play_hand = 4;
-    discard_card = 4;
     add_card_to_hand(8);
     score_is_doubled = false;
     has_use_item = false;
@@ -881,6 +883,7 @@ char Game::input_manage(){
 
 void Game::small_blind(){
     char input = 'i';
+    discard_card = 4;
     bool play = true;
     do {
         system("clear");
@@ -925,6 +928,7 @@ void Game::small_blind(){
 
 void Game::big_blind(){
     char input = 'i';
+    discard_card = 3;
     bool play = true;
     do {
         system("clear");
@@ -968,6 +972,7 @@ void Game::big_blind(){
 
 void Game::the_manacle(){
     char input = 'i';
+    discard_card = 2;
 
         system("clear");
         cout << "                                     ████████╗██╗  ██╗███████╗\n";

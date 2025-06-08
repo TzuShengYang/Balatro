@@ -237,19 +237,25 @@ void sign_up::run_UI(){
     }
 
     my_login_system.set_account(current_user_account);
-
+    string hided_passwd = "";
     while (true){
         do {
             system("clear");
             show_balatro();
             block_display("ACCOUNT", current_user_account, false);
-            block_display("PASSWORD", current_user_password, true);
+            block_display("PASSWORD", hided_passwd, true);
 
             cin >> input;
             if (input == '-' && current_user_password.length() > 0){
                 current_user_password = current_user_password.substr(0, current_user_password.length() - 1);
-            }  else if (char_is_valid(input)){
+                hided_passwd = hided_passwd.substr(0, hided_passwd.length() - 1);
+            } else if (char_is_valid(input)){
                 current_user_password += input;
+                if (hided_passwd.length() == 0) hided_passwd += input;
+                else {
+                    hided_passwd[hided_passwd.length() - 1] = '*';
+                    hided_passwd += input;
+                }
             }
         } while (input != '=');
 
@@ -358,19 +364,25 @@ void sign_in::run_UI(){
 
     my_login_system.set_account(current_user_account);
 
+    string hided_passwd = "";
     while (true){
-        
         do {
             system("clear");
             show_balatro();
             block_display("ACCOUNT", current_user_account, false);
-            block_display("PASSWORD", current_user_password, true);
+            block_display("PASSWORD", hided_passwd, true);
 
             cin >> input;
             if (input == '-' && current_user_password.length() > 0){
                 current_user_password = current_user_password.substr(0, current_user_password.length() - 1);
-            }  else if (char_is_valid(input)){
+                hided_passwd = hided_passwd.substr(0, hided_passwd.length() - 1);
+            } else if (char_is_valid(input)){
                 current_user_password += input;
+                if (hided_passwd.length() == 0) hided_passwd += input;
+                else {
+                    hided_passwd[hided_passwd.length() - 1] = '*';
+                    hided_passwd += input;
+                }
             }
         } while (input != '=');
 
