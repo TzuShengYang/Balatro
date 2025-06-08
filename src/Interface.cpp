@@ -461,13 +461,11 @@ void main_menu::run_UI(){
     char input = 'i';
     do {
         system("clear");
-        cout << current_user -> get_username() << "\n";
-        cout << current_user -> get_user_level() << "\n";
-        cout << current_user -> get_user_experience() << "\n";
-        cout << current_user -> get_user_currency() << "\n";
-        cout << current_user -> get_user_highest() << "\n";
-        cout << current_user -> get_user_rate() << "\n";
-        cout << current_user -> get_password() << "\n";
+        cout << "USERNAME: " << current_user -> get_username() << "\n";
+        cout << "LEVEL:    " << current_user -> get_user_level() << "\n\n";
+        cout << "YOUR CURRENCY:      " << current_user -> get_user_currency() << "\n";
+        cout << "YOUR HIGHEST SCORE: " << current_user -> get_user_highest() << "\n";
+
         show_balatro();
         item_display(15);
         input = input_manage();
@@ -729,11 +727,11 @@ void leading_board::rank_table_display(){
     int linenum = min(15, (int)sorted_rank.size());
 
     for (int i = 1;i <= linenum;i++){
-        const auto &[name, val] = sorted_rank[i - 1];
+        pair<string, int> a = sorted_rank[i - 1];
         cout << "          |";
         cout << setw(5) << left << i;
-        cout << setfill('-') << "    " << setw(36) << left << name;
-        cout << setfill(' ') << setw(5) << right << val << "|\n";
+        cout << setfill('-') << "    " << setw(36) << left << a.first;
+        cout << setfill(' ') << setw(5) << right << a.second << "|\n";
     }
 }
 
@@ -741,8 +739,8 @@ void leading_board::sort_leading_board(){
 
     sorted_rank.clear();
 
-    for (const auto &[name, info]: userdata.items()){
-        sorted_rank.emplace_back(name, info[key]);
+    for (auto a: userdata.items()){
+        sorted_rank.emplace_back(a.key(), a.value()[key]);
     }
 
     sort(sorted_rank.begin(), sorted_rank.end(), 
