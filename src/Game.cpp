@@ -588,6 +588,7 @@ void Game::show_hand_and_button_in_calculating(){
 
 void Game::show_result(){
     char input;
+    system("clear");
     cout << "\n\n\n";
     cout << "                                         " << setw(20) << left << "TOTAL SCORE : " << my_score_board -> get_score() << "\n";
     cout << "                                         " << setw(20) << left << "EXPERIENCE: " << (((my_score_board -> get_score() - 1) / 100) * 100) + 100 << "\n";
@@ -887,6 +888,7 @@ void Game::small_blind(){
     bool play = true;
     do {
         system("clear");
+        cout << "\n\n";
         cout << "                            ╔█████╗ ███╗   ███╗ █████╗ ██╗     ██╗     \n";
         cout << "                           ██╔════╝ ████╗ ████║██╔══██╗██║     ██║     \n";
         cout << "                            ██████╗ ██╔████╔██║███████║██║     ██║     \n";
@@ -932,6 +934,7 @@ void Game::big_blind(){
     bool play = true;
     do {
         system("clear");
+        cout << "\n\n";
         cout << "                                       ██████╗  ██╗ ╔██████╗ \n";
         cout << "                                       ██╔══██╗ ██║ ██║     \n";
         cout << "                                       ██████╔╝ ██║ ██║  ███╗\n";
@@ -944,7 +947,7 @@ void Game::big_blind(){
         cout << "                             ██████╔╝ ██║      ██║ ██╔██╗ ██║ ██║  ██║\n";
         cout << "                             ██╔══██╗ ██║      ██║ ██║╚██╗██║ ██║  ██║\n";
         cout << "                             ██████╔╝ ███████╗ ██║ ██║ ╚████║ ██████╔╝\n";
-        cout << "                            ╚═════╝  ╚══════╝ ╚═╝ ╚═╝  ╚═══╝ ╚═════╝ \n";
+        cout << "                             ╚═════╝  ╚══════╝ ╚═╝ ╚═╝  ╚═══╝ ╚═════╝ \n";
         cout << "\n\n\n";
 
         if (input == 'd' || input == 'D'){
@@ -975,6 +978,7 @@ void Game::the_manacle(){
     discard_card = 2;
 
         system("clear");
+        cout << "\n\n";
         cout << "                                     ████████╗██╗  ██╗███████╗\n";
         cout << "                                     ╚══██╔══╝██║  ██║██╔════╝\n";
         cout << "                                        ██║   ███████║█████╗  \n";
