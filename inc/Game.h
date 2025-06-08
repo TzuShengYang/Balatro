@@ -13,6 +13,7 @@
 #include <thread>
 #include <iomanip>
 #include <string>
+#include <ctime>
 
 using namespace std;
 
@@ -30,7 +31,7 @@ public:
     score_board();
 
     string set_hand_type_times(vector<card*> _cards); 
-    void calculate_score(vector<card*> _cards);
+    void calculate_score(vector<card*> _cards, bool _is_double);
 
     int get_times(string type_name);
     int get_score();
@@ -41,6 +42,7 @@ public:
     void init();
 
 };
+
 
 class Interface;
 
@@ -53,6 +55,7 @@ private:
     vector<card*> hand;
     vector<card*> table;
     vector<good*> goods;
+    vector<good*> inventory;
     login_system *log_out_sys;
 
     int selected_card_number;
@@ -64,13 +67,21 @@ private:
     int score;
     int prev_score;
     int sort_status;
+    int buy_item_num;
 
     bool inventory_button_is_selected;
     bool hand_button_is_selected;
     bool discard__button_is_selected;
+    bool score_is_doubled;
+    bool has_use_item;
 
     string current_hand_type;
 
+    bool good_in_shop_can_buy(int no);
+    bool good_in_inv_can_use(int no);
+    void buy_good(int no);
+    void use_good(int no);
+    void set_inventory();
     
     void reset_full_deck();//
     void shuffle_full_deck();
@@ -95,6 +106,11 @@ private:
     void show_hand_and_button_in_calculating();
     void show_result();
     void show_shop();
+    void show_goods(int selected_idx);
+    void show_inv_goods(int selected_idx);
+    
+
+    void show_inventory();
     void show_score_board();
     void show_sort_approach();
 

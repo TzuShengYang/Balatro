@@ -253,8 +253,8 @@ void sign_up::run_UI(){
             }
         } while (input != '=');
 
-        if (current_user_account.length() == 0){
-            cout << "Account can NOT be EMPTY.";
+        if (current_user_password.length() == 0){
+            cout << "Password can NOT be EMPTY.";
             cin >> input;
             input = 'i';
         } else {
@@ -374,8 +374,8 @@ void sign_in::run_UI(){
             }
         } while (input != '=');
 
-        if (current_user_account.length() == 0){
-            cout << "Account can NOT be EMPTY.";
+        if (current_user_password.length() == 0){
+            cout << "Password can NOT be EMPTY.";
             cin >> input;
             input = 'i';
         } else if (my_login_system.password_is_valid(current_user_password)){
@@ -442,7 +442,7 @@ void main_menu::set_item(){
                 break;
 
             case 3:
-                temp->set_item_name("LEADING BOARD");
+                temp->set_item_name("LEADER BOARD");
                 break;
                 
             default:
@@ -709,7 +709,7 @@ char leading_board::input_manage(){
             break;
 
         case 1:
-            key = "experience";
+            key = "rate";
             break;
 
         case 2:
@@ -727,11 +727,12 @@ void leading_board::rank_table_display(){
     int linenum = min(15, (int)sorted_rank.size());
 
     for (int i = 1;i <= linenum;i++){
-        pair<string, int> a = sorted_rank[i - 1];
-        cout << "          |";
-        cout << setw(5) << left << i;
-        cout << setfill('-') << "    " << setw(36) << left << a.first;
-        cout << setfill(' ') << setw(5) << right << a.second << "|\n";
+        pair<string, double> a = sorted_rank[i - 1];
+        cout << "          |  ";
+        cout << setw(3) << left << i;
+        cout << setfill('-') << "    " << setw(45) << left << a.first;
+        if (key == "rate") cout << setfill(' ') << setw(11) << right << setprecision(3) << a.second << "|\n";
+        else cout << setfill(' ') << setw(11) << right << (int)a.second << "|\n";
     }
 }
 
@@ -744,7 +745,7 @@ void leading_board::sort_leading_board(){
     }
 
     sort(sorted_rank.begin(), sorted_rank.end(), 
-        [](const pair<string, int> &a, const pair<string, int> &b){
+        [](const pair<string, double> &a, const pair<string, double> &b){
             return a.second > b.second;
         }
     );
@@ -755,10 +756,10 @@ void leading_board::bar_display(){
 
     if (page == 0){
         cout << "#";
-        for (int i = 0;i < 16;i++) cout << "=";
+        for (int i = 0;i < 21;i++) cout << "=";
     } else {
         cout << ".";
-        for (int i = 0;i < 16;i++) cout << "-";
+        for (int i = 0;i < 21;i++) cout << "-";
     }
 
     if (page == 0 || page == 1){
@@ -767,8 +768,8 @@ void leading_board::bar_display(){
         cout << ".";
     }
 
-    if (page == 1) for (int i = 0;i < 16;i++) cout << "=";
-    else for (int i = 0;i < 16;i++) cout << "-";
+    if (page == 1) for (int i = 0;i < 21;i++) cout << "=";
+    else for (int i = 0;i < 21;i++) cout << "-";
 
     if (page == 1 || page == 2){
         cout << "#";
@@ -776,8 +777,8 @@ void leading_board::bar_display(){
         cout << ".";
     }
 
-    if (page == 2) for (int i = 0;i < 16;i++) cout << "=";
-    else for (int i = 0;i < 16;i++) cout << "-";
+    if (page == 2) for (int i = 0;i < 21;i++) cout << "=";
+    else for (int i = 0;i < 21;i++) cout << "-";
 
     if (page == 2){
         cout << "#\n";
@@ -793,7 +794,7 @@ void leading_board::bar_display(){
         cout << "|";
     }
 
-    cout << "  HIGHEST SCORD ";
+    cout << "    HIGHEST SCORE    ";
 
     if (page == 0 || page == 1){
         cout << "║";
@@ -801,7 +802,7 @@ void leading_board::bar_display(){
         cout << "|";
     }
 
-    cout << "   EXPERIENCE   ";
+    cout << " score RATE per card ";
 
     if (page == 1 || page == 2){
         cout << "║";
@@ -809,7 +810,7 @@ void leading_board::bar_display(){
         cout << "|";
     }
 
-    cout << "      LEVEL     ";
+    cout << "        LEVEL        ";
 
     if (page == 2){
         cout << "║\n";
@@ -817,7 +818,39 @@ void leading_board::bar_display(){
         cout << "|\n";
     }
 
-    cout << "          :----------------'----------------'----------------:\n";
+    cout << "          ";
+
+    if (page == 0){
+        cout << "#";
+        for (int i = 0;i < 21;i++) cout << "=";
+    } else {
+        cout << ".";
+        for (int i = 0;i < 21;i++) cout << "-";
+    }
+
+    if (page == 0 || page == 1){
+        cout << "#";
+    } else {
+        cout << ".";
+    }
+
+    if (page == 1) for (int i = 0;i < 21;i++) cout << "=";
+    else for (int i = 0;i < 21;i++) cout << "-";
+
+    if (page == 1 || page == 2){
+        cout << "#";
+    } else {
+        cout << ".";
+    }
+
+    if (page == 2) for (int i = 0;i < 21;i++) cout << "=";
+    else for (int i = 0;i < 21;i++) cout << "-";
+
+    if (page == 2){
+        cout << "#\n";
+    } else {
+        cout << ".\n";
+    }
 }
 
 json leading_board::load_user(){

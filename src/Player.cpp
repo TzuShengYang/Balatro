@@ -96,18 +96,3 @@ bool Player::able_to_buy(int amount){
 
 //Player
 //------------------------------------------------------------
-
-Inventory::Inventory(){
-    amount = 0;
-}
-
-void Inventory::add_item(){
-
-}
-
-void Inventory::use_item(){
-    
-}
-
-//Inventory
-//------------------------------------------------------------

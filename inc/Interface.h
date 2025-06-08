@@ -121,7 +121,7 @@ private:
     int page;
     json userdata;
     string key;
-    vector<pair<string, int>> sorted_rank;
+    vector<pair<string, double>> sorted_rank;
 
     void run_UI();
     void bar_display();

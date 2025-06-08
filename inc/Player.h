@@ -46,17 +46,5 @@ public:
 
 };
 
-class Inventory{
-private:
-    unsigned int amount;
-    vector<good*> my_items;
-
-public:
-    Inventory();
-
-    void add_item();
-    void use_item();
-
-};
 
 #endif

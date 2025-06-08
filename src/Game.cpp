@@ -10,6 +10,124 @@ void wait(){
 Game::Game(): Interface(){
     my_score_board = new score_board;
     log_out_sys = new login_system;
+    has_use_item = false;
+}
+
+bool Game::good_in_shop_can_buy(int no){
+    if (goods.at(no) -> get_goods_amount() > 0) return true;
+    else return false;
+}
+
+bool Game::good_in_inv_can_use(int no){
+    if (inventory.at(no) -> get_goods_amount() > 0){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+void Game::buy_good(int no){
+    goods.at(no) -> buy();
+    inventory.at(no) -> gain();
+    current_player -> buy(goods.at(no) -> get_goods_price());
+}
+
+void Game::use_good(int no){
+    srand(time(0));
+
+    int fir = rand() % 6;
+    int sec = rand() % (7 - fir - 1) + fir + 1;
+    int thr = rand() % (8 - sec - 1) + sec + 1;
+
+    int copy_index1 = rand() % 8;
+    int copy_index2;
+    do {
+        copy_index2 = rand() % 8;
+    } while (copy_index1 == copy_index2);
+
+    inventory.at(no) -> use();
+
+    switch (no){
+        case 0:
+            score_is_doubled = true;
+            break;
+        case 1:
+            hand.at(fir) -> set_suit(0);
+            hand.at(sec) -> set_suit(0);
+            hand.at(thr) -> set_suit(0);
+            break;
+
+        case 2:
+            hand.at(fir) -> set_suit(1);
+            hand.at(sec) -> set_suit(1);
+            hand.at(thr) -> set_suit(1);
+            break;
+
+        case 3:
+            hand.at(fir) -> set_suit(2);
+            hand.at(sec) -> set_suit(2);
+            hand.at(thr) -> set_suit(2);
+            break;
+
+        case 4:
+            hand.at(fir) -> set_suit(3);
+            hand.at(sec) -> set_suit(3);
+            hand.at(thr) -> set_suit(3);
+            break;
+
+        case 5:
+            hand.at(copy_index1) -> set_suit(hand.at(copy_index2) -> get_card_suit());
+            hand.at(copy_index1) -> set_num(hand.at(copy_index2) -> get_card_num());
+            break;
+
+        case 6:
+            discard_card++;
+            break;
+
+        default:
+            break;
+    }
+}
+
+void Game::set_inventory(){
+    for (int i = 0;i < 7;i++){
+        good *temp = new good;
+        switch(i){
+            case 0:
+                temp -> set_goods("score x 2", 100, 0);
+                break;
+
+            case 1:
+                temp -> set_goods("change 3 cards to ♠  ", 50, 0);
+                break;
+
+            case 2:
+                temp -> set_goods("change 3 cards to ♥  ", 50, 0);
+                break;
+
+            case 3:
+                temp -> set_goods("change 3 cards to ♦  ", 0, 0);
+                break;
+
+            case 4:
+                temp -> set_goods("change 3 cards to ♣  ", 50, 0);
+                break;
+
+            case 5:
+                temp -> set_goods("copy 1 card", 80, 0);
+                break;
+
+            case 6:
+                temp -> set_goods("discard + 1", 100, 0);
+                break;
+                
+            default:
+                break;
+        }
+        
+        inventory.push_back(temp);
+    }
 }
 
 void Game::reset_full_deck(){
@@ -44,33 +162,37 @@ void Game::clear_hand(){
 }
 
 void Game::set_goods(){
-    for (int i = 0;i < 6;i++){
+    for (int i = 0;i < 7;i++){
         good *temp = new good;
         switch(i){
             case 0:
-                temp -> set_goods("score x 2", 10);
+                temp -> set_goods("score x 2", 100, 2);
                 break;
 
             case 1:
-                temp -> set_goods("change 3 cards to ♠", 5);
+                temp -> set_goods("change 3 cards to ♠  ", 50, 1);
                 break;
 
             case 2:
-                temp -> set_goods("change 3 cards to ♥", 5);
+                temp -> set_goods("change 3 cards to ♥  ", 50, 1);
                 break;
 
             case 3:
-                temp -> set_goods("change 3 cards to ♦", 5);
+                temp -> set_goods("change 3 cards to ♦  ", 50, 1);
                 break;
 
             case 4:
-                temp -> set_goods("change 3 cards to ♣", 5);
-                break;
-                
-            case 5:
-                temp -> set_goods("copy 1 card", 5);
+                temp -> set_goods("change 3 cards to ♣  ", 50, 1);
                 break;
 
+            case 5:
+                temp -> set_goods("copy 1 card", 80, 1);
+                break;
+
+            case 6:
+                temp -> set_goods("discard + 1", 100, 0);
+                break;
+                
             default:
                 break;
         }
@@ -163,7 +285,7 @@ void Game::unchoose_hand_card(){
 }
 
 void Game::calculate_score_of_table(){
-    my_score_board -> calculate_score(table);
+    my_score_board -> calculate_score(table, score_is_doubled);
     show_table_in_calculating();
     score = my_score_board -> get_cur_score();
 }
@@ -198,7 +320,7 @@ void Game::show_table(){
 void Game::show_table_in_calculating(){
     string add_process = "                                ";
     char input;
-    for (int card_idx = -1;card_idx <= selected_card_number;card_idx++){
+    for (int card_idx = -1;card_idx <= selected_card_number + 2;card_idx++){
         
         system("clear");
         show_score_board();
@@ -212,12 +334,12 @@ void Game::show_table_in_calculating(){
                 if (i == 0){
                     cout << "╔═════╗";
                 } else if (i == 1 || i == 3){
-                    cout << "   ";
+                    cout << "║  ";
                     if (table.at(j) -> get_card_suit() == 0) cout << "♠";
                     else if (table.at(j) -> get_card_suit() == 1) cout << "♥";
                     else if (table.at(j) -> get_card_suit() == 2) cout << "♦";
                     else cout << "♣";
-                    cout << "   ";
+                    cout << "  ║";
                 } else if (i == 2){
                     cout << "║ ";
                     if (table.at(j) -> get_card_num() == 1)       cout << " A ";
@@ -251,6 +373,7 @@ void Game::show_table_in_calculating(){
 
         if (card_idx >= 0 && card_idx < selected_card_number){
             if (table.at(card_idx) -> card_is_used()){
+                add_process += "\033[36m";
                 if (table.at(card_idx) -> get_card_num() == 1){
                     add_process += "  +11   ";
                 } else if (table.at(card_idx) -> get_card_num() >= 10){
@@ -258,16 +381,24 @@ void Game::show_table_in_calculating(){
                 } else {
                     add_process += "   +" + to_string(table.at(card_idx) -> get_card_num()) + "   ";
                 }
+                add_process += "\033[0m";
             } else {
                 add_process += "        ";
             }
             cout << add_process << "\n";
         } else if (card_idx == selected_card_number){
             for (int x = 0;x < 5 - selected_card_number;x++) add_process += "        ";
-            add_process += "   |  X ";
-            cout << add_process;
-            cout << my_score_board -> get__multiplier(table);
-            cout << "   ( " << my_score_board -> get_type(table) << " )\n";
+            add_process += "   |  X  \033[34m" + to_string(my_score_board -> get__multiplier(table)) + "\033[0m";
+            cout << add_process << "\n";
+        } else if (card_idx == selected_card_number + 1 && score_is_doubled){
+            add_process += "  X  \033[31m2\033[0m  ";
+            cout << add_process << "\n";
+        } else if (card_idx == selected_card_number + 1 && !score_is_doubled){
+            cout << add_process << "  ( " << my_score_board -> get_type(table) << " )\n";
+        } else if (card_idx == selected_card_number + 2 && score_is_doubled){
+            cout << add_process << "  ( " << my_score_board -> get_type(table) << " )\n";
+        } else if (card_idx == selected_card_number + 2 && !score_is_doubled){
+            cout << add_process << "  ( " << my_score_board -> get_type(table) << " )\n";
         } else {
             cout << "\n";
         }
@@ -275,6 +406,7 @@ void Game::show_table_in_calculating(){
         cout << "\n";
         
         show_hand_and_button_in_calculating();
+
         wait();
     }
      
@@ -288,7 +420,7 @@ void Game::show_hand_and_button(){
         sort_by_suit();
     }
     for (int i = 0;i < 5;i++){
-        cout << "          ";
+        cout << "       ";
         //inventory
         if (i == 0 || i == 4) cout << "             ";
         else if (i == 1 || i == 3){
@@ -379,7 +511,7 @@ void Game::show_hand_and_button(){
 void Game::show_hand_and_button_in_calculating(){
     char input;
     for (int i = 0;i < 5;i++){
-        cout << "          ";
+        cout << "       ";
         //inventory
         if (i == 0 || i == 4) cout << "             ";
         else if (i == 1 || i == 3){
@@ -409,12 +541,12 @@ void Game::show_hand_and_button_in_calculating(){
                 if (i == 0){
                     cout << ".-----.";
                 } else if (i == 1 || i == 3){
-                    cout << "   ";
+                    cout << "|  ";
                     if (hand.at(j) -> get_card_suit() == 0) cout << "♠";
                     else if (hand.at(j) -> get_card_suit() == 1) cout << "♥";
                     else if (hand.at(j) -> get_card_suit() == 2) cout << "♦";
                     else cout << "♣";
-                    cout << "   ";
+                    cout << "  |";
                 } else if (i == 2){
                     cout << "| ";
                     if (hand.at(j) -> get_card_num() == 1)       cout << " A ";
@@ -459,7 +591,7 @@ void Game::show_result(){
     cout << "\n\n\n";
     cout << "                                         " << setw(20) << left << "TOTAL SCORE : " << my_score_board -> get_score() << "\n";
     cout << "                                         " << setw(20) << left << "EXPERIENCE: " << (((my_score_board -> get_score() - 1) / 100) * 100) + 100 << "\n";
-    cout << "                                         " << setw(20) << left << "CURRENCY: " << ((my_score_board -> get_score() - 1) / 10) << "\n";
+    cout << "                                         " << setw(20) << left << "CURRENCY: " << ((my_score_board -> get_score() - 1) / 20) << "\n";
 
     current_player -> gain_exp((((my_score_board -> get_score() - 1) / 100) * 100) + 100);
     current_player -> gain_currency(((my_score_board -> get_score() - 1) / 20));
@@ -486,7 +618,125 @@ void Game::show_result(){
 }
 
 void Game::show_shop(){
+    char input = 'i';
+    int cur_idx = 0;
+    while (true){
+        do {
+            system("clear");
+            cout << "\n\n";
+            cout << "                                 ███████╗██╗  ██╗ ██████╗ ██████╗ \n";
+            cout << "                                 ██╔════╝██║  ██║██╔═══██╗██╔══██╗\n";
+            cout << "                                 ███████╗███████║██║   ██║██████╔╝\n";
+            cout << "                                 ╚════██║██╔══██║██║   ██║██╔═══╝ \n";
+            cout << "                                 ███████║██║  ██║╚██████╔╝██║     \n";
+            cout << "                                 ╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝     \n";
+            cout << "\n";
+            cout << "YOUR CURRENCY: " << current_player -> get_user_currency() << "$" << "\n\n";
 
+            show_goods(cur_idx);
+            
+            cin >> input;
+
+            if ((input == 'w' || input == 'W') && cur_idx > 0){
+                cur_idx--;
+            } else if ((input == 's' || input == 'S') && cur_idx < 6){
+                cur_idx++;
+            }
+
+        } while (input != '=');
+
+        if (cur_idx >= 7){
+            return;
+        } else if (buy_item_num >= 2){
+            cout << "You have bought too many item. By your skill bro.";
+            cin >> input;
+            input = 'i';
+        } else if (!good_in_shop_can_buy(cur_idx)){
+            cout << "                                  This item has been SOLD OUT";
+            cin >> input;
+            input = 'i';
+        } else if (current_player -> get_user_currency() < goods.at(cur_idx) -> get_goods_price()){
+            cout << "                               This item is UNAFFORDABLE to you.";
+            cin >> input;
+            input = 'i';
+        } else {
+            buy_good(cur_idx);
+            return;
+        }
+    }
+}
+
+void Game::show_inventory(){
+    char input = 'i';
+    int cur_idx = 0;
+    while (true){
+        do{
+            system("clear");
+            cout << "\n\n";
+            cout << "██╗ ███╗   ██╗██╗   ██╗███████╗███╗   ██╗████████╗ ██████╗ ██████╗ ██╗   ██╗\n";
+            cout << "██║ ████╗  ██║██║   ██║██╔════╝████╗  ██║╚══██╔══╝██╔═══██╗██╔══██╗╚██╗ ██╔╝\n";
+            cout << "██║ ██╔██╗ ██║██║   ██║█████╗  ██╔██╗ ██║   ██║   ██║   ██║██████╔╝ ╚████╔╝ \n";
+            cout << "██║ ██║╚██╗██║╚██╗ ██╔╝██╔══╝  ██║╚██╗██║   ██║   ██║   ██║██╔══██╗  ╚██╔╝  \n";
+            cout << "██║ ██║ ╚████║ ╚████╔╝ ███████╗██║ ╚████║   ██║   ╚██████╔╝██║  ██║   ██║   \n";
+            cout << "╚═╝ ╚═╝  ╚═══╝  ╚═══╝  ╚══════╝╚═╝  ╚═══╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝   ╚═╝   \n";
+            cout << "\n\n\n";
+            
+            show_inv_goods(cur_idx);
+
+            cin >> input;
+
+            if ((input == 'w' || input == 'W') && cur_idx > 0){
+                cur_idx--;
+            } else if ((input == 's' || input == 'S') && cur_idx < 6){
+                cur_idx++;
+            }
+        } while (input != '=');
+
+        if (cur_idx >= 7){
+            return;
+        } else if (!good_in_inv_can_use(cur_idx)){
+            cout << "                  Nah bro you has NOTHING, just focus on your game.\n";
+            cin >> input;
+            input = 'i';
+        } else {
+            use_good(cur_idx);
+            return;
+        }
+    }    
+}
+
+void Game::show_goods(int selected_idx){
+    for (int i = 0;i < 7;i++){
+        if (good_in_shop_can_buy(i)) cout << "\033[36m";
+        if (i == 0 || i == 6) cout << "                    " << setw(40) << left << goods.at(i) -> get_goods_name() << setw(10) << goods.at(i) -> get_goods_amount() << setw(3) << goods.at(i) -> get_goods_price() << "$   ";
+        else  cout << "                    " << setw(42) << left << goods.at(i) -> get_goods_name() << setw(10) << goods.at(i) -> get_goods_amount() << setw(3) << goods.at(i) -> get_goods_price() << "$   ";
+
+        if (i == selected_idx) cout << "<-";
+        cout << "\n\033[0m\n";
+    }
+
+    if (selected_idx >= 7){
+        cout << "                                           KEEP PLAYING                      <-\n";
+    } else {
+        cout << "                                           KEEP PLAYING\n";
+    }
+}
+
+void Game::show_inv_goods(int selected_idx){
+    for (int i = 0;i < 7;i++){
+        if (good_in_inv_can_use(i)) cout << "\033[36m";
+        if (i == 0 || i == 6) cout << "                    " << setw(40) << left << inventory.at(i) -> get_goods_name() << setw(10) << inventory.at(i) -> get_goods_amount() << "   " << "$   ";
+        else  cout << "                    " << setw(42) << left << inventory.at(i) -> get_goods_name() << setw(10) << inventory.at(i) -> get_goods_amount() << "   " << "    ";
+
+        if (i == selected_idx) cout << "<-";
+        cout << "\n\033[0m\n";
+    }
+
+    if (selected_idx >= 7){
+        cout << "                                           KEEP PLAYING                      <-\n";
+    } else {
+        cout << "                                           KEEP PLAYING\n";
+    }
 }
 
 void Game::show_score_board(){
@@ -534,10 +784,11 @@ void Game::run_game_UI(){
     play_hand = 4;
     discard_card = 4;
     add_card_to_hand(8);
+    score_is_doubled = false;
+    has_use_item = false;
     
     while (true){   
         if (play_hand <= 0) return;
-
         do {
             system("clear");
             show_score_board();
@@ -547,8 +798,13 @@ void Game::run_game_UI(){
             final_choice_processing();
         } while (input != '=');
 
-        if (final_choice == 0){
-            
+        if (final_choice == 0 && !has_use_item){
+            show_inventory();
+            has_use_item = true;
+        } else if (final_choice == 0 && has_use_item){
+            cout << "You only can use ONE item in a blind.";
+            cin >> input;
+            input = 'i';
         } else if (final_choice == 9){
             if (selected_card_number == 0){
                 cout << "You have to select at least ONE card.";
@@ -564,6 +820,8 @@ void Game::run_game_UI(){
                 table.clear();
                 selected_card_number = 0;
                 play_hand--;
+                score_is_doubled = false;
+                has_use_item = false;
             }
         } else if (final_choice == 10){
             if (selected_card_number == 0){
@@ -751,14 +1009,18 @@ int Game::run_game(Player *_current_user){
 
     reset_full_deck();
     set_goods();
+    set_inventory();
 
     for (int i = 0;i < 1;i++){
         round = i;
-        show_shop();
+        buy_item_num = 0;
+        if (current_player -> get_user_currency() > 0) show_shop();
         small_blind();
-        show_shop();
+        buy_item_num = 0;
+        if (current_player -> get_user_currency() > 0)show_shop();
         big_blind();
-        show_shop();
+        buy_item_num = 0;
+        if (current_player -> get_user_currency() > 0)show_shop();
         the_manacle();
     }
 
@@ -931,7 +1193,7 @@ string score_board::set_hand_type_times(vector<card*> _cards){
     return hand_type;
 }
 
-void score_board::calculate_score(vector<card*> _cards){
+void score_board::calculate_score(vector<card*> _cards, bool _is_double){
     string hand_type = set_hand_type_times(_cards);
     
     // multiplier
@@ -1030,7 +1292,9 @@ void score_board::calculate_score(vector<card*> _cards){
         }
     }
     
-    int hand_score = card_values_sum * multipliers[hand_type];
+    int mult = 1;
+    if (_is_double) mult = 2;
+    int hand_score = card_values_sum * multipliers[hand_type] * mult;
     total_score += hand_score;
     cur_score = hand_score;
 }

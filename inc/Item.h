@@ -37,10 +37,14 @@ private:
 public:
     good();
 
-    void set_goods(string _goods_name, unsigned int _price);
-    bool is_sold();
+    void set_goods(string _goods_name, unsigned int _price, unsigned int _amount);
+
+    void buy();
+    void gain();
+    void use();
 
     unsigned int get_goods_price();
+    unsigned int get_goods_amount();
     string get_goods_name();
 };
 
@@ -66,6 +70,8 @@ public:
     unsigned int get_card_num();
     bool card_is_chosen();
     bool card_is_used();
+    void set_suit(int _suit);
+    void set_num(int _num);
     void set_card_which_is_used();
     void switch_card_status();
 

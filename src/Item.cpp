@@ -34,6 +34,10 @@ bool Item::get_item_status(){
     return is_selected;
 }
 
+void card::set_suit(int _suit){
+    suit = _suit;
+}
+
 unsigned int Item::get_item_index(){
     return item_index;
 }
@@ -49,18 +53,30 @@ good::good(){
     amount = 2;
 }
 
-void good::set_goods(string _goods_name, unsigned int _price){
+void good::set_goods(string _goods_name, unsigned int _price, unsigned int _amount){
     item_name  = _goods_name;
     price = _price;
+    amount = _amount;
 }
 
-bool good::is_sold(){
-    if (amount <= 0) return true;
-    else return false;
+void good::buy(){
+    amount--;
+}
+
+void good::gain(){
+    amount++;
+}
+
+void good::use(){
+    amount--;
 }
 
 unsigned int good::get_goods_price(){
     return price;
+}
+
+unsigned int good::get_goods_amount(){
+    return amount;
 }
 
 string good::get_goods_name(){
@@ -95,6 +111,10 @@ unsigned int card::get_card_num(){
 
 void card::set_card_which_is_used(){
     is_in_set ^= true;
+}
+
+void card::set_num(int _num){
+    number = _num;
 }
 
 bool card::card_is_chosen(){
