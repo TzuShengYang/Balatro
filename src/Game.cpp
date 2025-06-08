@@ -674,12 +674,12 @@ void Game::show_inventory(){
         do{
             system("clear");
             cout << "\n\n";
-            cout << "██╗ ███╗   ██╗██╗   ██╗███████╗███╗   ██╗████████╗ ██████╗ ██████╗ ██╗   ██╗\n";
-            cout << "██║ ████╗  ██║██║   ██║██╔════╝████╗  ██║╚══██╔══╝██╔═══██╗██╔══██╗╚██╗ ██╔╝\n";
-            cout << "██║ ██╔██╗ ██║██║   ██║█████╗  ██╔██╗ ██║   ██║   ██║   ██║██████╔╝ ╚████╔╝ \n";
-            cout << "██║ ██║╚██╗██║╚██╗ ██╔╝██╔══╝  ██║╚██╗██║   ██║   ██║   ██║██╔══██╗  ╚██╔╝  \n";
-            cout << "██║ ██║ ╚████║ ╚████╔╝ ███████╗██║ ╚████║   ██║   ╚██████╔╝██║  ██║   ██║   \n";
-            cout << "╚═╝ ╚═╝  ╚═══╝  ╚═══╝  ╚══════╝╚═╝  ╚═══╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝   ╚═╝   \n";
+            cout << "          ██╗ ███╗   ██╗██╗   ██╗███████╗███╗   ██╗████████╗ ██████╗ ██████╗ ██╗   ██╗\n";
+            cout << "          ██║ ████╗  ██║██║   ██║██╔════╝████╗  ██║╚══██╔══╝██╔═══██╗██╔══██╗╚██╗ ██╔╝\n";
+            cout << "          ██║ ██╔██╗ ██║██║   ██║█████╗  ██╔██╗ ██║   ██║   ██║   ██║██████╔╝ ╚████╔╝ \n";
+            cout << "          ██║ ██║╚██╗██║╚██╗ ██╔╝██╔══╝  ██║╚██╗██║   ██║   ██║   ██║██╔══██╗  ╚██╔╝  \n";
+            cout << "          ██║ ██║ ╚████║ ╚████╔╝ ███████╗██║ ╚████║   ██║   ╚██████╔╝██║  ██║   ██║   \n";
+            cout << "          ╚═╝ ╚═╝  ╚═══╝  ╚═══╝  ╚══════╝╚═╝  ╚═══╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝   ╚═╝   \n";
             cout << "\n\n\n";
             
             show_inv_goods(cur_idx);
@@ -1143,7 +1143,7 @@ string score_board::set_hand_type_times(vector<card*> _cards){
         // 10JQKA
         
     }*/
-
+/*
     bool is_straight = false;
     if (card_count >= 5 && _cards.at(0) -> get_card_num() == _cards.at(1) -> get_card_num() + 1 && 
         _cards.at(1) -> get_card_num() == _cards.at(2) -> get_card_num() + 1 && 
@@ -1161,6 +1161,36 @@ string score_board::set_hand_type_times(vector<card*> _cards){
         }
         
     // 
+
+    */
+
+    vector<card*> temp = _cards;
+    
+    sort(temp.begin(), temp.end(), [](card *a, card *b){
+        int num_a = a->get_card_num();
+        int num_b = b->get_card_num();
+        
+        if(num_a == 1) num_a = 14;
+        if(num_b == 1) num_b = 14;
+        
+        if(num_a != num_b) {
+            return num_a > num_b;
+        }
+        
+        int suit_a = a->get_card_suit();
+        int suit_b = b->get_card_suit();
+        
+        return suit_a < suit_b;
+    });
+
+    bool is_straight = false;
+    if (card_count >= 5 && temp.at(0) -> get_card_num() == temp.at(1) -> get_card_num() + 1 &&
+        temp.at(1) -> get_card_num() == temp.at(2) -> get_card_num() + 1 &&
+        temp.at(2) -> get_card_num() == temp.at(3) -> get_card_num() + 1 &&
+        temp.at(3) -> get_card_num() == temp.at(4) -> get_card_num() + 1)
+        {
+            is_straight = true;
+        }
     vector<int> counts;
     for(auto& pair : number_count){
         counts.push_back(pair.second);
@@ -1393,7 +1423,7 @@ int score_board::get__multiplier(vector<card*> _cards){
             }
         }
     }*/
-
+/*
     bool is_straight = false;
     if (card_count == 5 && _cards.at(0) -> get_card_num() == _cards.at(1) -> get_card_num() + 1 && 
         _cards.at(1) -> get_card_num() == _cards.at(2) -> get_card_num() + 1 && 
@@ -1411,6 +1441,36 @@ int score_board::get__multiplier(vector<card*> _cards){
         }
 
     // 
+
+    */
+
+    vector<card*> temp = _cards;
+    
+    sort(temp.begin(), temp.end(), [](card *a, card *b){
+        int num_a = a->get_card_num();
+        int num_b = b->get_card_num();
+        
+        if(num_a == 1) num_a = 14;
+        if(num_b == 1) num_b = 14;
+        
+        if(num_a != num_b) {
+            return num_a > num_b;
+        }
+        
+        int suit_a = a->get_card_suit();
+        int suit_b = b->get_card_suit();
+        
+        return suit_a < suit_b;
+    });
+
+    bool is_straight = false;
+    if (card_count >= 5 && temp.at(0) -> get_card_num() == temp.at(1) -> get_card_num() + 1 &&
+        temp.at(1) -> get_card_num() == temp.at(2) -> get_card_num() + 1 &&
+        temp.at(2) -> get_card_num() == temp.at(3) -> get_card_num() + 1 &&
+        temp.at(3) -> get_card_num() == temp.at(4) -> get_card_num() + 1)
+        {
+            is_straight = true;
+        }
     vector<int> counts;
     for(auto& pair : number_count){
         counts.push_back(pair.second);
@@ -1535,7 +1595,7 @@ string score_board::get_type(vector<card*> _cards){
             }
         }
     }*/
-
+/*
     bool is_straight = false;
     if (card_count == 5 && _cards.at(0) -> get_card_num() == _cards.at(1) -> get_card_num() + 1 && 
         _cards.at(1) -> get_card_num() == _cards.at(2) -> get_card_num() + 1 && 
@@ -1552,6 +1612,35 @@ string score_board::get_type(vector<card*> _cards){
             is_straight = true;
         }
 
+        */
+
+        vector<card*> temp = _cards;
+    
+    sort(temp.begin(), temp.end(), [](card *a, card *b){
+        int num_a = a->get_card_num();
+        int num_b = b->get_card_num();
+        
+        if(num_a == 1) num_a = 14;
+        if(num_b == 1) num_b = 14;
+        
+        if(num_a != num_b) {
+            return num_a > num_b;
+        }
+        
+        int suit_a = a->get_card_suit();
+        int suit_b = b->get_card_suit();
+        
+        return suit_a < suit_b;
+    });
+
+    bool is_straight = false;
+    if (card_count >= 5 && temp.at(0) -> get_card_num() == temp.at(1) -> get_card_num() + 1 &&
+        temp.at(1) -> get_card_num() == temp.at(2) -> get_card_num() + 1 &&
+        temp.at(2) -> get_card_num() == temp.at(3) -> get_card_num() + 1 &&
+        temp.at(3) -> get_card_num() == temp.at(4) -> get_card_num() + 1)
+        {
+            is_straight = true;
+        }
     // 
     vector<int> counts;
     for(auto& pair : number_count){
