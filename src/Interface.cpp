@@ -177,14 +177,17 @@ sign_up::sign_up(): Interface(){
 }
 
 int sign_up::run_sign_up(Player *_current_user){
+    my_login_system.load_file();
     run_UI();
 
     if (successful){
-         _current_user -> set_username(my_login_system.get_username());
+        _current_user -> set_username(my_login_system.get_username());
         _current_user -> set_user_currency(my_login_system.get_user_currency());
         _current_user -> set_user_experience(my_login_system.get_user_experience());
         _current_user -> set_user_level(my_login_system.get_user_level());
         _current_user -> set_user_highest(my_login_system.get_user_highest());
+        _current_user -> set_password(my_login_system.get_password());
+        _current_user -> set_user_rate(my_login_system.get_user_rate());
     }
     current_user_account = "";
     current_user_password = "";
@@ -295,15 +298,17 @@ sign_in::sign_in(): Interface(){
 }
 
 int sign_in::run_sign_in(Player *_current_user){
+    my_login_system.load_file();
     run_UI();
 
     if (successful){
         _current_user -> set_username(my_login_system.get_username());
+        _current_user -> set_password(my_login_system.get_password());
         _current_user -> set_user_currency(my_login_system.get_user_currency());
         _current_user -> set_user_experience(my_login_system.get_user_experience());
         _current_user -> set_user_level(my_login_system.get_user_level());
         _current_user -> set_user_highest(my_login_system.get_user_highest());
-
+        _current_user -> set_user_rate(my_login_system.get_user_rate());
     }
     current_user_account = "";
     current_user_password = "";
@@ -461,6 +466,8 @@ void main_menu::run_UI(){
         cout << current_user -> get_user_experience() << "\n";
         cout << current_user -> get_user_currency() << "\n";
         cout << current_user -> get_user_highest() << "\n";
+        cout << current_user -> get_user_rate() << "\n";
+        cout << current_user -> get_password() << "\n";
         show_balatro();
         item_display(15);
         input = input_manage();
@@ -679,6 +686,7 @@ int leading_board::show_leading_board(){
 
 void leading_board::run_UI(){
     char input = 'i';
+    userdata = load_user();
     do {
         system("clear");
         bar_display();

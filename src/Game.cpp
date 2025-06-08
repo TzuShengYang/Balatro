@@ -9,6 +9,7 @@ void wait(){
 
 Game::Game(): Interface(){
     my_score_board = new score_board;
+    log_out_sys = new login_system;
 }
 
 void Game::reset_full_deck(){
@@ -463,6 +464,10 @@ void Game::show_result(){
     current_player -> gain_exp((((my_score_board -> get_score() - 1) / 100) * 100) + 100);
     current_player -> gain_currency(((my_score_board -> get_score() - 1) / 20));
     current_player -> set_user_highest(max((int)current_player -> get_user_highest(), my_score_board -> get_score()));
+    current_player -> set_user_rate((my_score_board -> get_score()) / (play_hand_number + discard_card_number));
+
+    log_out_sys -> save_data(current_player);
+    log_out_sys -> log_out();
 
     cout << "\n";
     cout << "                                ----------- gameplay statistic -----------\n\n";

@@ -53,6 +53,7 @@ private:
     vector<card*> hand;
     vector<card*> table;
     vector<good*> goods;
+    login_system *log_out_sys;
 
     int selected_card_number;
     int round;

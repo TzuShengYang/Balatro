@@ -8,6 +8,10 @@ void Player::set_username(string _username){
     username = _username;
 }
 
+void Player::set_password(string _password){
+    password = _password;
+}
+
 void Player::set_user_currency(unsigned int _user_currency){
     user_currency = _user_currency;
 }
@@ -24,8 +28,16 @@ void Player::set_user_highest(unsigned int _highest){
     highest = _highest;
 }
 
+void Player::set_user_rate(double _rate){
+    rate = _rate;
+}
+
 string Player::get_username(){
     return username;
+}
+
+string Player::get_password(){
+    return password;
 }
 
 unsigned int Player::get_user_level(){
@@ -42,6 +54,10 @@ unsigned int Player::get_user_experience(){
 
 unsigned int Player::get_user_highest(){
     return highest;
+}
+
+double Player::get_user_rate(){
+    return rate;
 }
 
 void Player::level_up(){
