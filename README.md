@@ -40,17 +40,14 @@ Project repository on GitHub: [https://github.com/TzuShengYang/Balatro](https://
    * Use **W**, **A**, **S**, **D**, keys to navigate and select options.
    * Press **=** (equals) as the Enter key to confirm selections.
    * Press **-** key as the backspace to delete word while sign in or sign up.
-
 2. **Login System**
 
    * User authentication with **Save** and **Load** functionality.
    * Credentials and player data stored in JSON format for persistence.
-
 3. **Currency & Inventory System**
 
    * Accumulate and spend in-game currency.
    * Manage items through an inventory interface.
-
 4. **User-Friendly Configuration**
 
    * Straightforward configuration file for key mappings and game settings.
