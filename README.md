@@ -19,9 +19,11 @@ A lightweight C++ terminal-based poker game.
     ├── Game.h
     ├── GameManager.h
     ├── Interface.h
+    ├── InterfaceNo.h
     ├── Item.h
     ├── LoginSystem.h
-    └── Player.h
+    ├── Player.h
+    └── json.hpp
 ```
 
 ## Repository
@@ -58,7 +60,7 @@ Project repository on GitHub: [https://github.com/TzuShengYang/Balatro](https://
 Build the project using `g++` with C++11 support:
 
 ```bash
-bash g++ -std=c++11 main.cpp src/Game.cpp src/GameManager.cpp src/Interface.cpp src/Item.cpp src/LoginSystem.cpp src/Player.cpp -o BALATRO
+g++ -std=c++11 main.cpp src/Game.cpp src/GameManager.cpp src/Interface.cpp src/Item.cpp src/LoginSystem.cpp src/Player.cpp -o BALATRO
 ```
 
 ## Known Issues
@@ -71,5 +73,5 @@ bash g++ -std=c++11 main.cpp src/Game.cpp src/GameManager.cpp src/Interface.cpp 
 After compilation, launch the game executable:
 
 ```bash
-bash ./BALATRO
+./BALATRO
 ```
